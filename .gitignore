@@ -12,5 +12,5 @@ tests/coverage_html/
 tests/.coverage
 build/
 tests/report/
-DS_Store
+.DS_Store
 env/
