@@ -6,3 +6,7 @@ def index(request):
 
 def gestionproductos(request):
     return render(request, 'gremlins/gestion-productos.html', {})
+
+def vendedorProfile(request):
+    return render(request, 'gremlins/vendedor-profile-page.html', {})
+
