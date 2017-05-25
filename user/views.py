@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.template import loader
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-+699999999999999999999999999999
 
 # Create your views here.
 #
@@ -40,9 +39,22 @@ def login(request):
         return redirect('user:index')
     return render(request, 'user/login.html', {})
 
+def loginResponse(request):
+    username = request.POST['email']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        print("logged in")
+        return render(request, 'user/signup.html', {})
+    else:
+        # Return an 'invalid login' error message.
+        print("no logged in ")
+        return render(request, 'user/login.html', {})
 
 def signup(request):
-    return render(request, 'user/signup', {})
+    return render(request, 'user/signup.html', {})
 
 
 # def logout(request):
