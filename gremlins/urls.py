@@ -18,8 +18,13 @@ from django.contrib import admin
 
 from . import views
 
+from user import views as userViews
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
-    url(r'login', views.login, name='login')
+
+    #User
+    url(r'^user/login/', userViews.login, name='login'),
+    url(r'user/', include('user.urls', namespace='user')),
 ]
