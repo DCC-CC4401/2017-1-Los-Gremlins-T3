@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'login', views.login, name='login'),
-    url(r'signup', views.signup, name='signup')
+    url(r'signup', views.signup, name='signup'),
+    url(r'user', views.user, name='user'),
+    url(r'gestionproductos', views.gestionproductos, name='gestionproductos')
 ]

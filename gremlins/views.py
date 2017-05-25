@@ -9,3 +9,9 @@ def login(request):
 
 def signup(request):
     return render(request, 'gremlins/signup.html', {})
+
+def user(request):
+    return render(request, 'gremlins/vendedor-profile-page.html', {})
+
+def gestionproductos(request):
+    return render(request, 'gremlins/gestion-productos.html', {})
