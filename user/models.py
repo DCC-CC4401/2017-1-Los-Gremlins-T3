@@ -1,58 +1,61 @@
 from django.conf import settings
 from django.db import models
-
-
+from django.contrib.auth.models import User
+'''
+    Django user attrs:
+        username (objective, use mail)
+        password
+        email
+        first_name (not used)
+        last_name (not used)
+'''
 # Cada modelo se mapea a la base de datos de django
-from django.contrib.auth.models import AbstractUser
 
 
-class User(AbstractUser):
-    email = models.EmailField(max_length=100, unique=True)
-    fullname = models.CharField(max_length=100)
-    USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['fullname',]
-
-    def get_full_name(self):
-        return self.fullname
-
-    def get_short_name(self):
-        return self.get_full_name()
+class AbstractUser(models.Model):
+    # Common data
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    fullname = models.TextField()
+    photo = models.ImageField()
 
 
-class Alumno(models.Model):
-    # To extend the Django User model we need to create a OneToOne realtionship
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.TextField(max_length=128)
-
-    def __str__(self):
-        return self.user.first_name + self.user.last_name
+class PaymentMethods(models.Model):
+    cash = models.BooleanField()
+    credit_card = models.BooleanField()
+    debit_card = models.BooleanField()
+    junaeb = models.BooleanField()
 
 
-class VendedorAbstracto(models.Model):
-    # Superclass, shouldn't be instantiated
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    payMethods = models.CommaSeparatedIntegerField(max_length=10)
+class Seller(models.Model):
+    # For user to make it fav and gather common data
+    user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE, related_name='seller')
+    payment_methods = models.OneToOneField(PaymentMethods, on_delete=models.CASCADE, related_name="seller")
+
+
+class Student(models.Model):
+    # To extend the AbstractUser model we need to create a OneToOne realtionship
+    user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE, related_name='student')
+    favorites = models.ManyToManyField(Seller)
 
     def __str__(self):
-        return self.user.first_name + self.user.last_name
+        return self.user.fullname
 
 
-class VendedorFijo(models.Model):
-    # Mantiene informacion en comun
-    superSeller = models.OneToOneField(VendedorAbstracto, on_delete=models.CASCADE)
+class FixedSeller(models.Model):
+    super_seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='fixed_seller')
     start_hour = models.TimeField(auto_now=True)
     end_hour = models.TimeField(auto_now=True)
-    adress = models.TextField(max_length=128)
+    address = models.TextField(max_length=128)
 
     def __str__(self):
-        return self.superSeller.user.first_name + self.superSeller.user.last_name
+        return self.user.fullname
 
 
-
-class VendedorAmbulante(models.Model):
-    superSeller = models.OneToOneField(VendedorAbstracto, on_delete=models.CASCADE)
+class WalkingSeller(models.Model):
+    super_seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='walking_seller')
 
     def __str__(self):
-        return self.superSeller.user.first_name + self.superSeller.user.last_name
+        return self.user.fullname
+
+
 

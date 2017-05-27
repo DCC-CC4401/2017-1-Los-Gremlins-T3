@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from user.forms import SignUpForm
+from django.contrib.auth.models import User
+from user.models import AbstractUser
 
 # Create your views here.
 #
@@ -38,46 +40,23 @@ from user.forms import SignUpForm
 #
 
 
-from django.contrib.auth.models import User
-
-
 
 def signup(request):
-
-    if request.method == 'POST':
-        userPass = request.POST.get('password', None)
-        userMail = request.POST.get('email', None)
-
-        if userMail and userPass:
-
-            u, created = User.objects.get_or_create(userMail, userMail)
-            if created:
-                u.set_password(userPass)
-                u.save()
-                return render(request, 'profile.html', {u})
-            else:
-                return render(request, 'profile.html', {u})
-        else:
-            return render(request, 'home.html')
-
-    else:
-        form = SignUpForm()
-        return render(request, 'user/signup.html', {'form': form})
-
-
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('user:login')
-        return render(request, 'user/signup.html', {'form': form})
+        if form.is_valid() and form.pass_is_valid(): # should show me pass dont match
+            account_type = form.cleaned_data['account_type']
+            duser = User.objects.create_superuser(form.cleaned_data['email'],
+                                                  form.cleaned_data['email'],
+                                                     form.cleaned_data['password'])
+
+            auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'])
+            auser.save()
+
+            return render(request, 'user/signup2.html', {'duser': duser, 'auser': auser, 'type': account_type})
     else:
         form = SignUpForm()
-        return render(request, 'user/signup.html', {'form': form})
+    return render(request, 'user/signup.html', {'form': form})
 
 
 # def logout(request):
