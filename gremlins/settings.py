@@ -130,3 +130,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/"),
 ]
 
+ACCOUNT_SIGNUP_FORM_CLASS = 'user.forms.SignupForm'
+AUTH_USER_MODEL = 'user.User'

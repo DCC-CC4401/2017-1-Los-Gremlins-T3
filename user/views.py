@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.template import loader
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from user.forms import SignUpForm
 
 # Create your views here.
 #
@@ -34,14 +37,47 @@ from django.http import HttpResponse
 #         return HttpResponse(template.render(context, request))
 #
 
-def login(request):
-    if "logged_in" in request.session and request.session["logged_in"]:
-        return redirect('user:index')
-    return render(request, 'user/login.html', {})
+
+from django.contrib.auth.models import User
+
 
 
 def signup(request):
-    return render(request, 'user/signup.html', {})
+
+    if request.method == 'POST':
+        userPass = request.POST.get('password', None)
+        userMail = request.POST.get('email', None)
+
+        if userMail and userPass:
+
+            u, created = User.objects.get_or_create(userMail, userMail)
+            if created:
+                u.set_password(userPass)
+                u.save()
+                return render(request, 'profile.html', {u})
+            else:
+                return render(request, 'profile.html', {u})
+        else:
+            return render(request, 'home.html')
+
+    else:
+        form = SignUpForm()
+        return render(request, 'user/signup.html', {'form': form})
+
+
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('user:login')
+        return render(request, 'user/signup.html', {'form': form})
+    else:
+        form = SignUpForm()
+        return render(request, 'user/signup.html', {'form': form})
 
 
 # def logout(request):

@@ -1,11 +1,28 @@
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 
 
 # Cada modelo se mapea a la base de datos de django
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    email = models.EmailField(max_length=100, unique=True)
+    fullname = models.CharField(max_length=100)
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['fullname',]
+
+    def get_full_name(self):
+        return self.fullname
+
+    def get_short_name(self):
+        return self.get_full_name()
+
+
 class Alumno(models.Model):
     # To extend the Django User model we need to create a OneToOne realtionship
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.TextField(max_length=128)
 
     def __str__(self):
@@ -14,7 +31,7 @@ class Alumno(models.Model):
 
 class VendedorAbstracto(models.Model):
     # Superclass, shouldn't be instantiated
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     payMethods = models.CommaSeparatedIntegerField(max_length=10)
 
     def __str__(self):
