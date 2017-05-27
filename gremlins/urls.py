@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'gestionproductos', views.gestionproductos, name='gestionproductos'),
 
     # User
-    url(r'^user/login$', auth_views.login, {'template_name':'user/login.html'}, name='login'),
-    url(r'^user/logout$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^user/login/$', auth_views.login, {'template_name':'user/login.html'}, name='login'),
+    url(r'^user/logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'user/', include('user.urls', namespace='user')),
 ]
