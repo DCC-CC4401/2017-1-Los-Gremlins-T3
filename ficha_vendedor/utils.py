@@ -12,7 +12,5 @@ def check_fixed_seller_active(start, end):
     else:
         return start <= now or now <= end
 
-
-print (datetime.strptime('03:55', '%H:%M').time())
 print (check_fixed_seller_active('11:00', '12:00'))
 print (check_fixed_seller_active('12:30', '21:30'))
