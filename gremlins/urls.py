@@ -16,15 +16,17 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-
+from homepage import views as home_views
 
 from . import views
 from user import views as userViews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
-    url(r'^$', views.index, name='index'),
     url(r'gestionproductos', views.gestionproductos, name='gestionproductos'),
+
+    # Homepage
+    url(r'^$', home_views.index, name='index'),
 
     # User
     url(r'^user/login/$', auth_views.login, {'template_name':'user/login.html'}, name='login'),
