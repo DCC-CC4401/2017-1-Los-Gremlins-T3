@@ -9,3 +9,6 @@ class Producto(models.Model):
     stock = models.IntegerField()
     description = models.TextField()
     owner = models.ForeignKey(Seller)
+    photo = models.ImageField()
+    prev_img_id = models.IntegerField()
+
