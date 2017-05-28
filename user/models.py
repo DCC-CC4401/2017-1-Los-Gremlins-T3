@@ -5,11 +5,18 @@ from django.contrib.auth.models import User
 # Cada modelo se mapea a la base de datos de django
 
 
+# Acount types:
+# 0: null
+# 1: Stundent
+# 2: Walking Seller
+# 3: Fixed Seller
+# 4: Admin
 class AbstractUser(models.Model):
     # Common data
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="abstract_user")
     fullname = models.TextField()
     photo = models.ImageField()
+    account_type = models.IntegerField(default=0)
 
 
 class PaymentMethod(models.Model):
