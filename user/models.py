@@ -36,6 +36,7 @@ class Seller(models.Model):
     # For user to make it fav and gather common data
     user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE, related_name='seller')
     payment_methods = models.ManyToManyField(PaymentMethod)
+    times_favorited = models.IntegerField(default=0)
 
 
 class Student(models.Model):
@@ -59,6 +60,7 @@ class FixedSeller(models.Model):
 
 class WalkingSeller(models.Model):
     super_seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='walking_seller')
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.fullname

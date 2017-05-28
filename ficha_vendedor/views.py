@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from user.models import AbstractUser, Seller, WalkingSeller, FixedSeller
+from user.models import AbstractUser, Seller, WalkingSeller, FixedSeller, PaymentMethod
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 
@@ -26,6 +26,9 @@ def fichavendedor(request, id):
             context['seller'] = seller
             fixed_seller = FixedSeller.objects.get(super_seller=seller)
             context['fixed_seller'] = fixed_seller
+            context['avaialble'] = check_active(fixed_seller.start_hour, fixed_seller.end_hour)
+            # check if it available
+            datetime.datetime.now()
             return render(request, 'ficha_vendedor/vendedor-fijo-profile.html', context)
 
         return render(request, 'ficha_vendedor/not-found.html')
@@ -34,4 +37,5 @@ def fichavendedor(request, id):
 
 
 
-
+def check_active(start_hour, end_hour):
+    return True
