@@ -1,37 +1,60 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-class Alumno(models.Model):
-    # To extend the Django User model we need to create a OneToOne realtionship
+# Cada modelo se mapea a la base de datos de django
+
+
+class AbstractUser(models.Model):
+    # Common data
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # The user can rate strains so it has a review_set
-    name = models.TextField(max_length=128)
+    fullname = models.TextField()
+    photo = models.ImageField()
+
+
+class PaymentMethod(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
 
     def __str__(self):
-        return self.user.first_name + self.user.last_name
+        return self.name
 
-class Vendedor(models.Model):
-    # Superclass, shouldn't be instantiated
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    payMethods = models.CommaSeparatedIntegerField(max_length=10)
+    @classmethod
+    def create(cls, name):
+        pay_method = cls(name=name)
+        pay_method.save()
+        return pay_method
+
+
+class Seller(models.Model):
+    # For user to make it fav and gather common data
+    user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE, related_name='seller')
+    payment_methods = models.ManyToManyField(PaymentMethod)
+
+
+class Student(models.Model):
+    # To extend the AbstractUser model we need to create a OneToOne realtionship
+    user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE, related_name='student')
+    favorites = models.ManyToManyField(Seller)
 
     def __str__(self):
-        return self.user.first_name + self.user.last_name
+        return self.user.fullname
 
-class VendedorFijo(models.Model):
-    superSeller = models.OneToOneField(Vendedor, on_delete=models.CASCADE)
+
+class FixedSeller(models.Model):
+    super_seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='fixed_seller')
     start_hour = models.TimeField(auto_now=True)
     end_hour = models.TimeField(auto_now=True)
-    adress = models.TextField(max_length=128)
+    address = models.TextField(max_length=128)
 
     def __str__(self):
-        return self.superSeller.user.first_name + self.superSeller.user.last_name
+        return self.user.fullname
 
 
-class VendedorAmbulante(models.Model):
-    superSeller = models.OneToOneField(Vendedor, on_delete=models.CASCADE)
+class WalkingSeller(models.Model):
+    super_seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='walking_seller')
 
     def __str__(self):
-        return self.superSeller.user.first_name + self.superSeller.user.last_name
+        return self.user.fullname
+
+
 

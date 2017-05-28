@@ -22,7 +22,7 @@ from . import views
 from user import views as userViews
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls, name='admin'),
     url(r'gestionproductos', views.gestionproductos, name='gestionproductos'),
 
     # Homepage
