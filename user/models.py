@@ -1,14 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
-'''
-    Django user attrs:
-        username (objective, use mail)
-        password
-        email
-        first_name (not used)
-        last_name (not used)
-'''
+
 # Cada modelo se mapea a la base de datos de django
 
 
