@@ -5,7 +5,7 @@ from user.models import Seller
 
 class Producto(models.Model):
     name = models.CharField(max_length=128)
-    price = models.IntField()
-    stock = models.IntField()
+    price = models.IntegerField()
+    stock = models.IntegerField()
     description = models.TextField()
     owner = models.ForeignKey(Seller)
