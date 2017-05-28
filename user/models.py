@@ -19,17 +19,23 @@ class AbstractUser(models.Model):
     photo = models.ImageField()
 
 
-class PaymentMethods(models.Model):
-    cash = models.BooleanField()
-    credit_card = models.BooleanField()
-    debit_card = models.BooleanField()
-    junaeb = models.BooleanField()
+class PaymentMethod(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def create(cls, name):
+        pay_method = cls(name=name)
+        pay_method.save()
+        return pay_method
 
 
 class Seller(models.Model):
     # For user to make it fav and gather common data
     user = models.OneToOneField(AbstractUser, on_delete=models.CASCADE, related_name='seller')
-    payment_methods = models.OneToOneField(PaymentMethods, on_delete=models.CASCADE, related_name="seller")
+    payment_methods = models.ManyToManyField(PaymentMethod)
 
 
 class Student(models.Model):

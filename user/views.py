@@ -8,7 +8,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from user.forms import SignUpForm
 from django.contrib.auth.models import User
-from user.models import AbstractUser
+from user.models import AbstractUser, Student, Seller, FixedSeller, WalkingSeller
 
 # Create your views here.
 #
@@ -48,12 +48,36 @@ def signup(request):
             account_type = form.cleaned_data['account_type']
             duser = User.objects.create_superuser(form.cleaned_data['email'],
                                                   form.cleaned_data['email'],
-                                                     form.cleaned_data['password'])
-
+                                                  form.cleaned_data['password'])
             auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'])
             auser.save()
+            if account_type is '1':
+                student = Student(user=auser)
+                student.save()
+                return redirect('login')
 
-            return render(request, 'user/signup2.html', {'duser': duser, 'auser': auser, 'type': account_type})
+            if account_type is '2':
+                seller = Seller()
+                seller.user = auser
+                seller.save()
+                seller.payment_methods.add(form.cleaned_data['pay_methods'])
+                seller.save()
+
+                walking_seller = WalkingSeller(super_seller=seller)
+                walking_seller.save()
+
+            elif account_type is '3':
+                seller = Seller()
+                seller.user = auser
+                seller.save()
+                seller.payment_methods.add(form.cleaned_data['pay_methods'])
+                seller.save()
+                fixed_seller = FixedSeller(super_seller=seller,
+                                           start_hour=form.cleaned_data['start_hour'],
+                                           end_hour=form.cleaned_data['end_hour'],
+                                           address=form.cleaned_data['address'])
+                fixed_seller.save()
+            return redirect('login')
     else:
         form = SignUpForm()
     return render(request, 'user/signup.html', {'form': form})
