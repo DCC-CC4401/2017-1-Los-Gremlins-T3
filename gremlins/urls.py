@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from homepage import views as home_views
+from ficha_vendedor import views as ficha_vendedor_views
 
 from . import views
 from user import views as userViews
@@ -24,7 +25,9 @@ from user import views as userViews
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'gestionproductos', views.gestionproductos, name='gestionproductos'),
-    url(r'fichavendedor', views.fichavendedor, name='fichavendedor'),
+
+    # Ficha_vendedor
+    url(r'ficha_vendedor/(\d*)$', ficha_vendedor_views.fichavendedor, name='ficha_vendedor'),
 
 
     # Homepage

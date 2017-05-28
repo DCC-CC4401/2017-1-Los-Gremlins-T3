@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 
-def fichavendedor(request):
-    return render(request, 'vendedor-profile-page.html', {})
+def fichavendedor(request, id):
+    return render(request, 'ficha_vendedor/vendedor-profile-page.html', {'id': id})
