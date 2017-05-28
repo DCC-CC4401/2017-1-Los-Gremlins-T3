@@ -24,6 +24,8 @@ from user import views as userViews
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'gestionproductos', views.gestionproductos, name='gestionproductos'),
+    url(r'fichavendedor', views.fichavendedor, name='fichavendedor'),
+
 
     # Homepage
     url(r'^$', home_views.index, name='index'),

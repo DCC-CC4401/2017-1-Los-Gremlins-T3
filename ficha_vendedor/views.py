@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def fichavendedor(request):
+    return render(request, 'vendedor-profile-page.html', {})
