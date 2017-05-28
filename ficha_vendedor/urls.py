@@ -5,7 +5,7 @@ from . import views
 app_name = 'ficha_vendedor'
 
 urlpatterns = [
-    url(r'(\d*)', views.fichavendedor, name='vendedor-profile-page'),
+    url(r'(\d*)/edit', views.seller_edit, name='edit'),
     #url(r'^$', views.profile, name='profile'),
 
 ]

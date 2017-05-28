@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Ficha_vendedor
     url(r'ficha_vendedor/(\d*)$', ficha_vendedor_views.fichavendedor, name='ficha_vendedor'),
-
+    url(r'ficha_vendedor/', include('ficha_vendedor.urls', namespace='ficha_vendedor')),
 
     # Homepage
     url(r'^$', home_views.index, name='index'),
