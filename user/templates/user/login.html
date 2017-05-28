@@ -25,8 +25,8 @@
 
                     <div class='row'>
                         <div class='input-field col s12'>
-                            <input class='validate' type='email' name='username' id='username'/>
                             <label style="text-align: center;" for='email'>Ingresa tu correo</label>
+                            <input class='validate' type='email' name='username' id='username'/>
                         </div>
                     </div>
                     <div class='row'>
@@ -38,11 +38,10 @@
                             <a class='red-text text-accent-2' href='#!'><b>¿Olvidaste tu contraseña?</b></a>
                         </label>
                     </div>
-
-                    <div class='row'>
-                        <input type="submit" value="login" class='col l6 offset-l3 btn btn-large waves-effect teal'>
-                        <input type="hidden" name="next" value="{{ next }}"/>
-                    </div>
+                 <div class='row'>
+                    <input type="submit" value="login" class='col l6 offset-l3 btn-large teal' />
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                 </div>
                 </form>
             </div>
         </div>
