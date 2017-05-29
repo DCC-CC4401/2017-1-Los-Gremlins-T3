@@ -76,8 +76,7 @@ def edit_student(request, pkid):
                 duser.save()
             return redirect('login')
     else:
-        if auser.account_type is not 1:
-            return render(request, 'not-found.html')
-
-        form = StudentEditForm({})  # TODO: Preload with previous data
-    return render(request, 'user/student-edit.html', {'form': form, 'pkid': pkid})
+        if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 1:
+                form = StudentEditForm({})  # TODO: Preload with previous data
+                return render(request, 'user/student-edit.html', {'form': form, 'pkid': pkid})
+    return render(request, 'not-found.html')
