@@ -6,7 +6,7 @@
                     <div class="container">
                         <div class="section">
                             <div class="row">
-                                {% for product in seller.product_set.all %}
+                                {% for product in seller.products.all %}
                                     <div class="col s6 m6 l4">
                                         <div class="container">
                                             <div class="card z-depth-1">
@@ -62,7 +62,7 @@
                                                         <li>Precio: <a class="green-text light-green-text">${{ product.price }}</a>
                                                         </li>
                                                         <li>Categoria: {{ product.category }}</li>
-                                                        <li>Stock: 20</li>
+                                                        <li>Stock: {{ product.stock }}</li>
                                                         <!--<small class="btn-floating btn-small waves-effect waves-light red accent-2"><i class="material-icons tiny">add</i></small>-->
                                                         <br>
                                                         <li>Descripción: {{ product.description }}.

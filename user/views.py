@@ -31,9 +31,9 @@ def signup(request):
                 seller = Seller()
                 seller.user = auser
                 seller.save()
-                seller.payment_methods.add(form.cleaned_data['pay_methods'])
+                for pay in form.cleaned_data['pay_methods']:
+                    seller.payment_methods.add(pay)
                 seller.save()
-
                 walking_seller = WalkingSeller(super_seller=seller)
                 walking_seller.save()
 
@@ -83,7 +83,11 @@ def edit_student(request, pkid):
         if form.is_valid() and form.pass_is_valid():  # should show me pass dont match
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-
+            fullname = form.cleaned_data['fullname']
+            if fullname is not "":
+                print("edited fullname")
+                auser.fullname = fullname
+                auser.save()
             if email is not "":
                 print("edited mail")
                 duser.email = email
@@ -96,7 +100,7 @@ def edit_student(request, pkid):
             return redirect('login')
     else:
         if request.user.is_authenticated():
-            logged_auser = AbstractUser(user=request.user)
+            logged_auser = AbstractUser.objects.get(user=request.user)
             if (request.user.id == int(pkid) and auser.account_type is 1) or logged_auser.account_type is 4:
                 form = StudentEditForm({})  # TODO: Preload with previous data
                 return render(request, 'user/student-edit.html', {'form': form, 'pkid': pkid})
