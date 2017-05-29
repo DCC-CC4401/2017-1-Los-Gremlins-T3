@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from user.models import AbstractUser, Seller, WalkingSeller, FixedSeller, PaymentMethod
+from user.models import AbstractUser, Seller, WalkingSeller, FixedSeller, PaymentMethod, Student
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from ficha_vendedor.forms import FixedSellerEditForm, WalkingSellerEditForm
@@ -10,11 +10,12 @@ import datetime
 
 def fichavendedor(request, pkid):
     try:
-        # find django user with that id.
-        context = {}
-        context['now'] = datetime.datetime.now()
         duser = User.objects.get(pk=pkid)
         auser = AbstractUser.objects.get(user=duser)
+        # find django user with that id.
+        context = {}
+        context['pkid'] = pkid
+        context['now'] = datetime.datetime.now()
         context['auser'] = auser
         if auser.account_type is 2:
             # walking seller
@@ -22,7 +23,36 @@ def fichavendedor(request, pkid):
             context['seller'] = seller
             walking_seller = WalkingSeller.objects.get(super_seller=seller)
             context['walking_seller'] = walking_seller
-            return render(request, 'ficha_vendedor/vendedor-ambulante-profile.html', context)
+            if request.user.is_authenticated() and request.user.id == int(pkid):
+                # Vista del vendedor
+                return render(request, 'ficha_vendedor/vendedor-ambulante-profile.html', context)
+            else:
+                # Vista del estudiante
+                logged_auser = AbstractUser.objects.get(user=request.user)
+                if logged_auser.account_type is 1:
+                    # Es estudiante
+                    logged_student = Student.objects.get(user=logged_auser)
+                    print('es estudiante')
+                    if seller in logged_student.favorites.all():
+                        print('es fav')
+                        context['is_favorited'] = True
+                        if request.method == 'POST':
+                            # switch behaviour
+                            context['is_favorited'] = False
+                            logged_student.favorites.remove(seller)
+                            logged_student.save()
+                            seller.times_favorited -= 1
+                            seller.save()
+                    else:
+                        if request.method == 'POST':
+                            print('se hace fav')
+                            context['is_favorited'] = True
+                            logged_student.favorites.add(seller)
+                            logged_student.save()
+                            seller.times_favorited += 1
+                            seller.save()
+
+                return render(request, 'ficha_vendedor/vendedor-ambulante-public.html', context)
         elif auser.account_type is 3:
             # fixed seller
             seller = Seller.objects.get(user=auser)
@@ -32,14 +62,41 @@ def fichavendedor(request, pkid):
             context['avaialble'] = check_active(fixed_seller.start_hour, fixed_seller.end_hour)
             # check if it available
             datetime.datetime.now()
-            return render(request, 'ficha_vendedor/vendedor-fijo-profile.html', context)
-
-        return render(request, 'not-found.html')
+            if request.user.is_authenticated() and request.user.id == int(pkid):
+                # Vista del vendedor
+                return render(request, 'ficha_vendedor/vendedor-fijo-profile.html', context)
+            else:
+                # Vista del estudiante
+                logged_auser = AbstractUser.objects.get(user=request.user)
+                if logged_auser.account_type is 1:
+                    # Es estudiante
+                    logged_student = Student.objects.get(user=logged_auser)
+                    print('es estudiante')
+                    if seller in logged_student.favorites.all():
+                        print('es fav')
+                        context['is_favorited'] = True
+                        if request.method == 'POST':
+                            # switch behaviour
+                            context['is_favorited'] = False
+                            logged_student.favorites.remove(seller)
+                            logged_student.save()
+                            seller.times_favorited -= 1
+                            seller.save()
+                    else:
+                        if request.method == 'POST':
+                            print('se hace fav')
+                            context['is_favorited'] = True
+                            logged_student.favorites.add(seller)
+                            logged_student.save()
+                            seller.times_favorited += 1
+                            seller.save()
+                return render(request, 'ficha_vendedor/vendedor-fijo-public.html', context)
     except ObjectDoesNotExist:
         return render(request, 'not-found.html')
+    return render(request, 'not-found.html')
 
 
-def seller_edit(request,pkid):
+def seller_edit(request, pkid):
     duser = User.objects.get(pk=pkid)
     auser = AbstractUser.objects.get(user=duser)
     if auser.account_type is 2:
@@ -124,8 +181,8 @@ def walking_seller_edit(request, pkid):
             return redirect('login')
     else:
         if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 2:
-                form = WalkingSellerEditForm({})  # TODO: Preload with previous data
-                return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
+            form = WalkingSellerEditForm({})  # TODO: Preload with previous data
+            return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
     return render(request, 'not-found.html')
 
 
@@ -140,7 +197,8 @@ def checkin(request):
             else:
                 walking_seller.is_active = True
             walking_seller.save()
-            return redirect('ficha_vendedor/'+str(request.user.id))
+            return redirect('ficha_vendedor/' + str(request.user.id))
+
 
 def check_active(start_hour, end_hour):
     return True
