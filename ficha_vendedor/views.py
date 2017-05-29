@@ -34,9 +34,9 @@ def fichavendedor(request, pkid):
             datetime.datetime.now()
             return render(request, 'ficha_vendedor/vendedor-fijo-profile.html', context)
 
-        return render(request, 'ficha_vendedor/../gremlins/templates/not-found.html')
+        return render(request, 'not-found.html')
     except ObjectDoesNotExist:
-        return render(request, 'ficha_vendedor/../gremlins/templates/not-found.html')
+        return render(request, 'not-found.html')
 
 
 def seller_edit(request,pkid):
@@ -52,16 +52,15 @@ def seller_edit(request,pkid):
 
 
 def fixed_seller_edit(request, pkid):
+    try:
+        duser = User.objects.get(pk=pkid)
+        auser = AbstractUser.objects.get(user=duser)
+        seller = Seller.objects.get(user=auser)
+        fixed_seller = FixedSeller.objects.get(super_seller=seller)
+    except ObjectDoesNotExist:
+        return render(request, 'not-found.html')
     if request.method == 'POST':
         form = FixedSellerEditForm(request.POST)
-        try:
-            duser = User.objects.get(pk=pkid)
-            auser = AbstractUser.objects.get(user=duser)
-            seller = Seller.objects.get(user=auser)
-            fixed_seller = FixedSeller.objects.get(super_seller=seller)
-        except ObjectDoesNotExist:
-            return render(request, 'not-found.html')
-
         if form.is_valid() and form.pass_is_valid():  # should show me pass dont match
             email = form.cleaned_data['email']
             pay_methods = form.cleaned_data['pay_methods']
@@ -91,21 +90,21 @@ def fixed_seller_edit(request, pkid):
 
             return redirect('login')
     else:
-        form = FixedSellerEditForm({}) # TODO: Preload with previous data
-    return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
+        if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 3:
+            form = FixedSellerEditForm({})  # TODO: Preload with previous data
+            return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
+        return render(request, 'not-found.html')
 
 
 def walking_seller_edit(request, pkid):
+    try:
+        duser = User.objects.get(pk=pkid)
+        auser = AbstractUser.objects.get(user=duser)
+        seller = Seller.objects.get(user=auser)
+    except ObjectDoesNotExist:
+        return render(request, 'not-found.html')
     if request.method == 'POST':
         form = WalkingSellerEditForm(request.POST)
-        try:
-            duser = User.objects.get(pk=pkid)
-            auser = AbstractUser.objects.get(user=duser)
-            seller = Seller.objects.get(user=auser)
-            walking_seller = WalkingSeller.objects.get(super_seller=seller)
-        except ObjectDoesNotExist:
-            return render(request, 'not-found.html')
-
         if form.is_valid() and form.pass_is_valid():  # should show me pass dont match
             email = form.cleaned_data['email']
             pay_methods = form.cleaned_data['pay_methods']
@@ -124,8 +123,10 @@ def walking_seller_edit(request, pkid):
                 seller.save()
             return redirect('login')
     else:
-        form = WalkingSellerEditForm({}) # TODO: Preload with previous data
-    return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
+        if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 2:
+                form = WalkingSellerEditForm({})  # TODO: Preload with previous data
+                return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
+    return render(request, 'not-found.html')
 
 def check_active(start_hour, end_hour):
     return True
