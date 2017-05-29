@@ -141,23 +141,22 @@ def fixed_seller_edit(request, pkid):
                 print('changed pass')
                 duser.set_password(password)
                 duser.save()
-            if pay_methods is not "":
+            if pay_methods is not None:
                 print('changed pay')
                 seller.payment_methods.clear()
                 seller.payment_methods.add(pay_methods)
                 seller.save()
-            if start_hour is not "":
+            if start_hour is not None:
                 print('changed start hour')
                 fixed_seller.start_hour = start_hour
-            if end_hour is not "":
+            if end_hour is not None:
                 print('changed end hour')
                 fixed_seller.end_hour = end_hour
             if address is not "":
                 print('changed address')
                 fixed_seller.address = address
             fixed_seller.save()
-
-            return redirect('login')
+            return redirect('ficha_vendedor/'+str(pkid))
     else:
         if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 3:
             form = FixedSellerEditForm({})  # TODO: Preload with previous data
@@ -198,7 +197,7 @@ def walking_seller_edit(request, pkid):
                 seller.payment_methods.clear()
                 seller.payment_methods.add(pay_methods)
                 seller.save()
-            return redirect('login')
+            return redirect('ficha_vendedor/' + str(pkid))
     else:
         if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 2:
             form = WalkingSellerEditForm({})  # TODO: Preload with previous data

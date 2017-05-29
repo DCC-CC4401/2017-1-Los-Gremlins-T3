@@ -33,8 +33,17 @@
             <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
                 <li>
                     <div class="userView">
+                    {% if logged_student %}
+                        <a href="/user/{{ logged_user.id }}/edit">
+                    {% endif %}
+                        {% if logged_seller %}
+                           <a href="/ficha_vendedor/{{ logged_user.id }}/edit">
+
+                    {% endif %}
+
                         <i class="material-icons right grey-text text-lighten-2"
                            style="position: absolute; bottom: -0.5em; right: 0.5em; padding: 0 0 !important;">settings</i>
+                    </a>
                         <div class="background" style="height:175px;">
                             <img src="/static/app/img/background4.png">
                         </div>
