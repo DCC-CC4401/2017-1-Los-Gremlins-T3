@@ -12,7 +12,6 @@
 
       <form class="col s12 m12" method="post">
         {% csrf_token %}
-        {{ form }}
         <div class='row'>
           <div class='col s12 m12'>
           </div>
@@ -22,7 +21,8 @@
           <div class='input-field col s12 m12'>
             &ensp;Nombre del producto:
             <div class="input-field inline ">
-              <input placeholder="Pizza" class='validate' type='text' name='item' id='item' />
+              {{ form.name }}
+              <!--<input placeholder="Pizza" class='validate' type='text' name='item' id='item' />-->
               <label style="text-align: center" for='item'></label>
             </div>
           </div>
@@ -32,8 +32,9 @@
           <div class='input-field col s12 m12'>
             &ensp;Precio del producto:
             <div class="input-field inline">
-              <input placeholder="1300" class='validate' type='text' name='precio' id='precio' />
-              <label style="text-align: center" for='precio'></label>
+              {{ form.price }}
+              <!--<input placeholder="1300" class='validate' type='text' name='precio' id='precio' />-->
+              <!--<label style="text-align: center" for='precio'></label>-->
             </div>
           </div>
         </div>
@@ -41,8 +42,9 @@
           <div class='input-field col s12 m12'>
             &ensp;Stock del producto:
             <div class="input-field inline">
-              <input placeholder="42" class='validate' type='text' name='stock' id='stock' />
-              <label style="text-align: center" for='stock'></label>
+              {{ form.stock }}
+              <!--<input placeholder="42" class='validate' type='text' name='stock' id='stock' />-->
+              <!--<label style="text-align: center" for='stock'></label>-->
             </div>
           </div>
         </div>
@@ -51,8 +53,9 @@
             <div class="row">
               <div class="input-field col s12 m12">
                 <i class="material-icons prefix">&emsp;mode_edit</i>
-                <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-                <label  for="icon_prefix2">&emsp;Descripción</label>
+                {{ form.description }}
+                <!--<textarea id="icon_prefix2" class="materialize-textarea"></textarea>-->
+                <!--<label  for="icon_prefix2">&emsp;Descripción</label>-->
               </div>
             </div>
           </form>
@@ -60,55 +63,8 @@
         <div>
           Selecciona una imagen previa:
         </div>
-
-        <div class="col s12 l6">
-          <input class="with-gap" name="group1" type="radio" id="test1" />
-          <label for="test1"><img style="max-width: 50px;" src="/static/app/img/bread.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test2" />
-          <label for="test2"><img style="max-width: 50px;" src="/static/app/img/breakfast.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test3" />
-          <label for="test3"><img style="max-width: 50px;" src="/static/app/img/burger.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test4" />
-          <label for="test4"><img style="max-width: 50px;" src="/static/app/img/chicken.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test5" />
-          <label for="test5"><img style="max-width: 50px;" src="/static/app/img/chicken2.png"></label>
+        {{ form.prev_img }}
         </div>
-        <div class="col s12 l6">
-          <input class="with-gap" name="group1" type="radio" id="test6" />
-          <label for="test6"><img style="max-width: 50px;" src="/static/app/img/chocolate.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test7" />
-          <label for="test7"><img style="max-width: 50px;" src="/static/app/img/coke.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test8" />
-          <label for="test8"><img style="max-width: 50px;" src="/static/app/img/cupcake.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test9" />
-          <label for="test9"><img style="max-width: 50px;" src="/static/app/img/donut.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test10" />
-          <label for="test10"><img style="max-width: 50px;" src="/static/app/img/jelly.png"></label>
-        </div>
-        <div class="col s12 l6">
-          <input class="with-gap" name="group1" type="radio" id="test11" />
-          <label for="test11"><img style="max-width: 50px;" src="/static/app/img/fish.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test12" />
-          <label for="test12"><img style="max-width: 50px;" src="/static/app/img/fries.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test13" />
-          <label for="test13"><img style="max-width: 50px;" src="/static/app/img/hot-dog.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test14" />
-          <label for="test14"><img style="max-width: 50px;" src="/static/app/img/icecream.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test15" />
-          <label for="test15"><img style="max-width: 50px;" src="/static/app/img/juice.png"></label>
-        </div>
-        <div class="col s12 l6">
-          <input class="with-gap" name="group1" type="radio" id="test16" />
-          <label for="test16"><img style="max-width: 50px;" src="/static/app/img/lettuce.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test17" />
-          <label for="test17"><img style="max-width: 50px;" src="/static/app/img/pizza.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test18" />
-          <label for="test18"><img style="max-width: 50px;" src="/static/app/img/spaguetti.png"></label>
-          <input class="with-gap" name="group2" type="radio" id="test19" />
-          <label for="test19"><img style="max-width: 50px;" src="/static/app/img/rice.png"></label>
-
-        </div>
-
       </form>
 
       <div id="file-upload" class="section">
@@ -151,7 +107,7 @@
         </div>
         <div class='row'>
           <a class='col l5 offset-l4 btn btn-large waves-effect button teal'
-            href="user">&emsp; &emsp;Agregar<i class="material-icons right">send</i></a>
+            href="/user">&emsp; &emsp;Agregar<i class="material-icons right">send</i></a>
         </div>
       </div>
 
