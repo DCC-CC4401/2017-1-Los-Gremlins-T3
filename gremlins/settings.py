@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'homepage',
     'ficha_vendedor',
-    'app'
+    'app',
+    'producto'
 ]
 
 MIDDLEWARE = [
