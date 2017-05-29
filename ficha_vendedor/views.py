@@ -158,7 +158,9 @@ def fixed_seller_edit(request, pkid):
             fixed_seller.save()
             return redirect('ficha_vendedor/'+str(pkid))
     else:
-        if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 3:
+        logged_auser = AbstractUser(user=request.user)
+        if request.user.is_authenticated() and \
+                ((request.user.id == int(pkid) and auser.account_type is 2) or logged_auser.account_type is 4):
             form = FixedSellerEditForm({})  # TODO: Preload with previous data
             return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
         return render(request, 'not-found.html')
@@ -199,7 +201,9 @@ def walking_seller_edit(request, pkid):
                 seller.save()
             return redirect('ficha_vendedor/' + str(pkid))
     else:
-        if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 2:
+        logged_auser = AbstractUser(user=request.user)
+        if request.user.is_authenticated() and \
+                ((request.user.id == int(pkid) and auser.account_type is 2) or logged_auser.account_type is 4):
             form = WalkingSellerEditForm({})  # TODO: Preload with previous data
             return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
     return render(request, 'not-found.html')

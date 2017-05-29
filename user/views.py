@@ -80,7 +80,9 @@ def edit_student(request, pkid):
                 duser.save()
             return redirect('login')
     else:
-        if request.user.is_authenticated() and request.user.id == int(pkid) and auser.account_type is 1:
+        if request.user.is_authenticated():
+            logged_auser = AbstractUser(user=request.user)
+            if (request.user.id == int(pkid) and auser.account_type is 1) or logged_auser.account_type is 4:
                 form = StudentEditForm({})  # TODO: Preload with previous data
                 return render(request, 'user/student-edit.html', {'form': form, 'pkid': pkid})
     return render(request, 'not-found.html')
