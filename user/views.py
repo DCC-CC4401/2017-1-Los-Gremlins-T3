@@ -69,11 +69,13 @@ def edit_student(request, pkid):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
 
-            if email is not None:
+            if email is not "":
+                print("edited mail")
                 duser.email = email
                 duser.username = email
                 duser.save()
-            if password is not None:
+            if password is not "":
+                print("edited pass")
                 duser.set_password(password)
                 duser.save()
             return redirect('login')
