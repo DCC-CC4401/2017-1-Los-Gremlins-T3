@@ -1,6 +1,7 @@
 
 from django import forms
 from user.models import AbstractUser, PaymentMethod
+from django.utils.safestring import mark_safe
 
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
@@ -31,9 +32,42 @@ class StudentEditForm(forms.Form):
             if password == password2:
                 return True
         return False
+_alabels = [
+    '<label class="prev" "for="test1"><img src="/static/app/img/AvatarEstudiante1.png"/>\
+    </label>',
+    '<label class="prev" "for="test2"><img src="/static/app/img/AvatarEstudiante2.png"/>\
+    </label>',
+    '<label class="prev" "for="test3"><img src="/static/app/img/AvatarEstudiante3.png"/>\
+    </label>',
+    '<label class="prev" "for="test4"><img src="/static/app/img/AvatarEstudiante4.png"/>\
+    </label>',
+]
+_slabels = [
+    '<label class="prev" "for="test1"><img src="/static/app/img/AvatarVendedor1.png"/>\
+    </label>',
+    '<label class="prev" "for="test2"><img src="/static/app/img/AvatarVendedor2.png"/>\
+    </label>',
+    '<label class="prev" "for="test3"><img src="/static/app/img/AvatarVendedor3.png"/>\
+    </label>',
+    '<label class="prev" "for="test4"><img src="/static/app/img/AvatarVendedor4.png"/>\
+    </label>',
+    '<label class="prev" "for="test4"><img src="/static/app/img/AvatarVendedor5.png"/>\
+    </label>',
+    '<label class="prev" "for="test4"><img src="/static/app/img/AvatarVendedor6.png"/>\
+    </label>',
+]
+
+_achoices = [(id, mark_safe(_alabels[id])) for id in range(len(_alabels))]
+_schoices = [(id, mark_safe(_slabels[id])) for id in range(len(_slabels))]
+_radio_attrs = {
+    'class': 'with-gap',
+    'name': 'group1',
+    'id': 'test1'
+}
 
 
 class SignUpForm(forms.Form):
+
     # Common data (Student & Sellers)
     email = forms.EmailField(label='E-Mail',
                              max_length=254,
@@ -44,6 +78,17 @@ class SignUpForm(forms.Form):
     fullname = forms.CharField(label='Nombre completo',
                                max_length=128,
                                help_text='Requerido. Tu nombre o el nombre de tu tienda.')
+
+    student_avatar = forms.ChoiceField(label='Alumno, selecciona una imagen previa',
+                                    widget=forms.RadioSelect,
+                                    choices=_achoices,
+                                       initial=0)
+
+    seller_avatar = forms.ChoiceField(label='Vendedor, selecciona una imagen previa',
+                                    widget=forms.RadioSelect,
+                                    choices=_schoices,
+                                      initial=1)
+
     password = forms.CharField(label='Contraseña',
                                widget=forms.PasswordInput)
     password2 = forms.CharField(label='Repite contraseña',

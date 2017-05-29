@@ -53,8 +53,13 @@
                         {% if logged_seller %}
                             <a href="/ficha_vendedor/{{ logged_user.id }}">
                         {% endif %}
-                        <img style="margin-top: 16%;" class="circle"
-                             src="/static/app/img/AvatarPenguin.png"></a>
+                        {% if logged_auth %}
+                                                    <img style="margin-top: 16%;" class="circle" src="{{ logged_avatar }}"></a>
+
+                            {% else %}
+                                                    <img style="margin-top: 16%;" class="circle" src="/static/app/img/AvatarPenguin.png"></a>
+
+                        {% endif %}
                         {% if logged_student %}
                             <a href="#!name">
                         {% endif %}
@@ -63,7 +68,7 @@
                         {% endif %}
                         {% if logged_auth %}
                             <span style="margin-left: 5%;"
-                                                   class="white-text name">{{ logged_user.username }}</span></a>
+                                                   class="white-text name">{{ logged_name }}</span></a>
 
                         {% else %}
                             <span style="margin-left: 5%;" class="white-text name">Invitado</span></a>
@@ -84,8 +89,7 @@
                     <label>
                       No<input type="checkbox"><span class="lever"></span>Si
                     </label>
-                  </div>
-                </li>
+                  </div>                </li>
                 <li><a class="subheader">Filtros</a></li>
                 <li>
                   <div class="switch" style="margin-left: 10px;">

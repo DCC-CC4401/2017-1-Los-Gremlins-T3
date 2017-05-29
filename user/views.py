@@ -9,7 +9,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from user.forms import SignUpForm, StudentEditForm, AdminSignUpForm
 from django.contrib.auth.models import User
-from user.models import AbstractUser, Student, Seller, FixedSeller, WalkingSeller
+from user.models import AbstractUser, Student, Seller, FixedSeller, WalkingSeller, PaymentMethod
 
 
 def signup(request):
@@ -23,28 +23,25 @@ def signup(request):
             auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'], account_type=int(account_type))
             auser.save()
             if account_type is '1':
+                auser.avatar = '/static/app/img/AvatarEstudiante' + str(int(form.cleaned_data['student_avatar']) + 1) + ".png"
+                auser.save()
                 student = Student(user=auser)
                 student.save()
                 return redirect('login')
-
+            # Here if seller
+            auser.avatar = '/static/app/img/AvatarVendedor' + str(int(form.cleaned_data['seller_avatar']) + 1) + ".png"
+            auser.save()
+            seller = Seller()
+            seller.user = auser
+            seller.save()
+            for pay in form.cleaned_data['pay_methods']:
+                seller.payment_methods.add(pay)
+            seller.save()
             if account_type is '2':
-                seller = Seller()
-                seller.user = auser
-                seller.save()
-                for pay in form.cleaned_data['pay_methods']:
-                    seller.payment_methods.add(pay)
-                seller.save()
                 walking_seller = WalkingSeller(super_seller=seller)
                 walking_seller.save()
 
             elif account_type is '3':
-                seller = Seller()
-                seller.user = auser
-                seller.save()
-                seller.payment_methods.add(form.cleaned_data['pay_methods'])
-                seller.save()
-                print("Hora inicial: "+ str(form.cleaned_data['start_hour']))
-                print("Hora final: " + str(form.cleaned_data['end_hour']))
                 fixed_seller = FixedSeller(super_seller=seller,
                                            start_hour=form.cleaned_data['start_hour'],
                                            end_hour=form.cleaned_data['end_hour'],
@@ -52,7 +49,7 @@ def signup(request):
                 fixed_seller.save()
             return redirect('login')
     else:
-        form = SignUpForm()
+        form = SignUpForm(initial={'pay_methods': [PaymentMethod.objects.all().values_list('name', flat=True)[0]]})
     return render(request, 'user/signup.html', {'form': form})
 
 

@@ -23,6 +23,8 @@ def fichavendedor(request, pkid):
             seller = Seller.objects.get(user=auser)
             context['seller'] = seller
             walking_seller = WalkingSeller.objects.get(super_seller=seller)
+            for product in seller.producto_set.all():
+                print(product.name)
             context['walking_seller'] = walking_seller
             if request.user.is_authenticated() and request.user.id == int(pkid):
                 # Vista del vendedor

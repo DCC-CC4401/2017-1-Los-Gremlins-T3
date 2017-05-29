@@ -15,6 +15,7 @@ def user_processor(request):
         user = request.user
         try:
             auser = AbstractUser.objects.get(user=user)
+
             auth = True
         except ObjectDoesNotExist:
             pass
@@ -44,5 +45,7 @@ def user_processor(request):
             'logged_student': student,
             'logged_walking_seller': walking_seller,
             'logged_fixed_seller': fixed_seller,
-            'logged_auth': auth}
+            'logged_auth': auth,
+            'logged_name': auser.fullname,
+            'logged_avatar': auser.avatar}
 
