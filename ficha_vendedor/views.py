@@ -4,6 +4,7 @@ from user.models import AbstractUser, Seller, WalkingSeller, FixedSeller, Paymen
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from ficha_vendedor.forms import FixedSellerEditForm, WalkingSellerEditForm
+from ficha_vendedor.utils import check_fixed_seller_active
 
 import datetime
 
@@ -59,7 +60,7 @@ def fichavendedor(request, pkid):
             context['seller'] = seller
             fixed_seller = FixedSeller.objects.get(super_seller=seller)
             context['fixed_seller'] = fixed_seller
-            context['avaialble'] = check_active(fixed_seller.start_hour, fixed_seller.end_hour)
+            context['avaialble'] = check_fixed_seller_active(fixed_seller.start_hour, fixed_seller.end_hour)
             # check if it available
             datetime.datetime.now()
             if request.user.is_authenticated() and request.user.id == int(pkid):

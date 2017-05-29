@@ -50,8 +50,8 @@ class Student(models.Model):
 
 class FixedSeller(models.Model):
     super_seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='fixed_seller')
-    start_hour = models.TimeField(auto_now=True)
-    end_hour = models.TimeField(auto_now=True)
+    start_hour = models.TimeField()
+    end_hour = models.TimeField()
     address = models.TextField(max_length=128)
 
     def __str__(self):

@@ -43,6 +43,8 @@ def signup(request):
                 seller.save()
                 seller.payment_methods.add(form.cleaned_data['pay_methods'])
                 seller.save()
+                print("Hora inicial: "+ str(form.cleaned_data['start_hour']))
+                print("Hora final: " + str(form.cleaned_data['end_hour']))
                 fixed_seller = FixedSeller(super_seller=seller,
                                            start_hour=form.cleaned_data['start_hour'],
                                            end_hour=form.cleaned_data['end_hour'],
