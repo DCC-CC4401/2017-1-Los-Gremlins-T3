@@ -128,5 +128,19 @@ def walking_seller_edit(request, pkid):
                 return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
     return render(request, 'not-found.html')
 
+
+def checkin(request):
+    if request.user.is_authenticated():
+        auser = AbstractUser.objects.get(user=request.user)
+        if auser.account_type is 2:
+            seller = Seller.objects.get(user=auser)
+            walking_seller = WalkingSeller.objects.get(super_seller=seller)
+            if walking_seller.is_active:
+                walking_seller.is_active = False
+            else:
+                walking_seller.is_active = True
+            walking_seller.save()
+            return redirect('ficha_vendedor/'+str(request.user.id))
+
 def check_active(start_hour, end_hour):
     return True
