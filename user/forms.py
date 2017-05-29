@@ -6,9 +6,27 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 
 
-class RegistroVendedorFijoForm(forms.Form):
-    fullname = forms.CharField(label='Full name', max_length=100)
+class StudentEditForm(forms.Form):
+    email = forms.EmailField(label='E-Mail',
+                             max_length=254,
+                             required=False)
 
+    # TODO: Avatar change
+
+    password = forms.CharField(label='Nueva Contraseña',
+                               widget=forms.PasswordInput,
+                               required=False)
+    password2 = forms.CharField(label='Repite nueva contraseña',
+                                widget=forms.PasswordInput,
+                                required=False)
+
+    def pass_is_valid(self):
+        if 'password' in self.cleaned_data:
+            password = self.cleaned_data['password']
+            password2 = self.cleaned_data['password2']
+            if password == password2:
+                return True
+        return False
 
 class SignUpForm(forms.Form):
     # Common data (Student & Sellers)
@@ -39,8 +57,6 @@ class SignUpForm(forms.Form):
     # Walking Seller & Fixed Seller no Student
     pay_methods = forms.ModelMultipleChoiceField(label='Metodos de pago',
                                                  queryset=PaymentMethod.objects.all())
-
-
 
     class Meta:
         model = AbstractUser

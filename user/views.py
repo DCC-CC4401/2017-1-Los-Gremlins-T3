@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -6,39 +7,9 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from user.forms import SignUpForm
+from user.forms import SignUpForm, StudentEditForm
 from django.contrib.auth.models import User
 from user.models import AbstractUser, Student, Seller, FixedSeller, WalkingSeller
-
-# Create your views here.
-#
-# def create(request):
-#     if request.method == "POST":
-#         firstname = request.POST.get('firstname', '')
-#         lastname = request.POST.get('lastname', '')
-#         username = request.POST.get('username', '')
-#         password = request.POST.get('password', '')
-#         password2 = request.POST.get('password2', '')
-#         email = request.POST.get('email', '')
-#
-#         if firstname == "" or lastname == "" or username == "" or password == "" or password2 == "" or email == "" or password != password2:
-#             template = loader.get_template('user/create.html')
-#             context = {"error": True}
-#             return HttpResponse(template.render(context, request))
-#         else:
-#             user = User.objects.create_user(username, email, password, first_name=firstname, last_name=lastname)
-#             # Create the stoner user
-#             stoner = Stoner(user=user)
-#             stoner.save()
-#             context = {'registered': True}
-#             return render(request, 'user/login.html', context)
-#
-#     else:
-#         template = loader.get_template('user/create.html')
-#         context = {}
-#         return HttpResponse(template.render(context, request))
-#
-
 
 
 def signup(request):
@@ -49,7 +20,7 @@ def signup(request):
             duser = User.objects.create_superuser(form.cleaned_data['email'],
                                                   form.cleaned_data['email'],
                                                   form.cleaned_data['password'])
-            auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'])
+            auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'], account_type=account_type)
             auser.save()
             if account_type is '1':
                 student = Student(user=auser)
@@ -83,11 +54,30 @@ def signup(request):
     return render(request, 'user/signup.html', {'form': form})
 
 
-# def logout(request):
-#     try:
-#         auth_logout(request)
-#         del request.session['logged_in']
-#         del request.session['username']
-#     except KeyError:
-#         pass
-#     return redirect('homepage:index')
+def edit_student(request, pkid):
+    try:
+        duser = User.objects.get(pk=pkid)
+        auser = AbstractUser.objects.get(user=duser)
+    except ObjectDoesNotExist:
+        return render(request, '/not-found.html')
+    if request.method == 'POST':
+        form = StudentEditForm(request.POST)
+
+        if form.is_valid() and form.pass_is_valid():  # should show me pass dont match
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            if email is not None:
+                duser.email = email
+                duser.username = email
+                duser.save()
+            if password is not None:
+                duser.set_password(password)
+                duser.save()
+            return redirect('login')
+    else:
+        if auser.account_type is not 1:
+            return render(request, 'not-found.html')
+
+        form = StudentEditForm({})  # TODO: Preload with previous data
+    return render(request, 'user/student-edit.html', {'form': form, 'pkid': pkid})
