@@ -20,7 +20,7 @@ def signup(request):
             duser = User.objects.create_superuser(form.cleaned_data['email'],
                                                   form.cleaned_data['email'],
                                                   form.cleaned_data['password'])
-            auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'], account_type=account_type)
+            auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'], account_type=int(account_type))
             auser.save()
             if account_type is '1':
                 student = Student(user=auser)

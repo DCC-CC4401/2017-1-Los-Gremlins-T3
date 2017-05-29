@@ -18,12 +18,17 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from homepage import views as home_views
 from producto import views as producto_views
+from ficha_vendedor import views as ficha_vendedor_views
 
 from . import views
 from user import views as userViews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
+
+    # Ficha_vendedor
+    url(r'ficha_vendedor/(\d*)$', ficha_vendedor_views.fichavendedor, name='ficha_vendedor'),
+    url(r'ficha_vendedor/', include('ficha_vendedor.urls', namespace='ficha_vendedor')),
 
     # Homepage
     url(r'^$', home_views.index, name='index'),
