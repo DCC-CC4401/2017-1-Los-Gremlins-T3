@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.conf import settings
-from producto.models import Producto
+from user.models import Producto
 
 _labels = [
     '<label class="prev" "for="test1"><img src="/static/app/img/bread.png"/>\

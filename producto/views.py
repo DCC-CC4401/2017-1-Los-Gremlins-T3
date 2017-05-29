@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from producto.models import Producto
 from django.core.exceptions import ObjectDoesNotExist
 from producto.forms import CreateProductoForm
-from producto.models import Producto
+from user.models import Producto
 
 # Create your views here.
 
