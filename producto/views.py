@@ -29,4 +29,4 @@ def producto(request, pkid):
         form = CreateProductoForm()
 
     context['form'] = form
-    return render(request, 'gremlins/gestion-productos.html', context)
+    return render(request, 'producto/gestion-productos.html', context)
