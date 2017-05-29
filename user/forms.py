@@ -11,6 +11,10 @@ class StudentEditForm(forms.Form):
                              max_length=254,
                              required=False)
 
+    fullname = forms.CharField(label='Nombre completo',
+                               max_length=128,
+                               required=False)
+
     # TODO: Avatar change
 
     password = forms.CharField(label='Nueva Contraseña',

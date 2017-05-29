@@ -158,7 +158,8 @@ def fixed_seller_edit(request, pkid):
             fixed_seller.save()
             return redirect('ficha_vendedor/'+str(pkid))
     else:
-        logged_auser = AbstractUser(user=request.user)
+        logged_auser = AbstractUser.objects.get(user=request.user)
+        print(str(logged_auser.account_type))
         if request.user.is_authenticated() and \
                 ((request.user.id == int(pkid) and auser.account_type is 2) or logged_auser.account_type is 4):
             form = FixedSellerEditForm({})  # TODO: Preload with previous data
@@ -201,7 +202,9 @@ def walking_seller_edit(request, pkid):
                 seller.save()
             return redirect('ficha_vendedor/' + str(pkid))
     else:
-        logged_auser = AbstractUser(user=request.user)
+        logged_auser = AbstractUser.objects.get(user=request.user)
+        print(str(logged_auser.account_type))
+
         if request.user.is_authenticated() and \
                 ((request.user.id == int(pkid) and auser.account_type is 2) or logged_auser.account_type is 4):
             form = WalkingSellerEditForm({})  # TODO: Preload with previous data
@@ -223,5 +226,31 @@ def checkin(request):
             return redirect('ficha_vendedor/' + str(request.user.id))
 
 
-def check_active(start_hour, end_hour):
-    return True
+def delete_seller(request, pkid):
+    try:
+        duser = User.objects.get(pk=pkid)
+        auser = AbstractUser.objects.get(user=duser)
+        seller = Seller.objects.get(user=auser)
+        walking_seller = None
+        fixed_seller = None
+        if auser.account_type is 2:
+            walking_seller = WalkingSeller.objects.get(super_seller=seller)
+        elif auser.account_type is 3:
+            fixed_seller = FixedSeller.objects.get(super_seller=seller)
+    except ObjectDoesNotExist:
+        return render(request, 'not-found.html')
+    if request.user.is_authenticated():
+        print('auth')
+        logged_user = AbstractUser.objects.get(user=request.user)
+        if logged_user.account_type is 4:
+            print('admin')
+            # admin
+            if walking_seller:
+                walking_seller.delete()
+            if fixed_seller:
+                fixed_seller.delete()
+            seller.delete()
+            auser.delete()
+            duser.delete()
+            return redirect('index')
+    return render(request, 'not-found.html')
