@@ -33,28 +33,40 @@
             <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
                 <li>
                     <div class="userView">
-                    {% if logged_student %}
-                        <a href="/user/{{ logged_user.id }}/edit">
-                    {% endif %}
+                        {% if logged_student %}
+                            <a href="/user/{{ logged_user.id }}/edit">
+                        {% endif %}
                         {% if logged_seller %}
-                           <a href="/ficha_vendedor/{{ logged_user.id }}/edit">
+                            <a href="/ficha_vendedor/{{ logged_user.id }}/edit">
 
-                    {% endif %}
+                        {% endif %}
 
                         <i class="material-icons right grey-text text-lighten-2"
                            style="position: absolute; bottom: -0.5em; right: 0.5em; padding: 0 0 !important;">settings</i>
-                    </a>
+                        </a>
                         <div class="background" style="height:175px;">
                             <img src="/static/app/img/background4.png">
                         </div>
-                        <a href="#!user"><img style="margin-top: 16%;" class="circle"
-                                              src="/static/app/img/AvatarPenguin.png"></a>
+                        {% if logged_student %}
+                            <a href="#!user">
+                        {% endif %}
+                        {% if logged_seller %}
+                            <a href="/ficha_vendedor/{{ logged_user.id }}">
+                        {% endif %}
+                        <img style="margin-top: 16%;" class="circle"
+                             src="/static/app/img/AvatarPenguin.png"></a>
+                        {% if logged_student %}
+                            <a href="#!name">
+                        {% endif %}
+                        {% if logged_seller %}
+                            <a href="/ficha_vendedor/{{ logged_user.id }}">
+                        {% endif %}
                         {% if logged_auth %}
-                            <a href="#!name"><span style="margin-left: 5%;"
+                            <span style="margin-left: 5%;"
                                                    class="white-text name">{{ logged_user.username }}</span></a>
 
                         {% else %}
-                            <a href="#!name"><span style="margin-left: 5%;" class="white-text name">Invitado</span></a>
+                            <span style="margin-left: 5%;" class="white-text name">Invitado</span></a>
 
                         {% endif %}
                     </div>
