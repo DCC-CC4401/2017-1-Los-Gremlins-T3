@@ -46,17 +46,18 @@ class SignUpForm(forms.Form):
     # Hide fields with jquery depending of accoutn
     # Fixed Seller no Walkin Seller & Student
     start_hour = forms.TimeField(label='Horario de apertura',
-                                 widget=forms.TimeInput(),
+                                 widget=forms.TimeInput(format='%H:%M'),
                                  initial='10:00')
     end_hour = forms.TimeField(label='Horario de cierre',
-                               widget=forms.TimeInput(),
-                               initial='10:00')
+                               widget=forms.TimeInput(format='%H:%M'),
+                               initial='20:00')
     address = forms.CharField(label="Dirección del local",
                               max_length=128)
 
     # Walking Seller & Fixed Seller no Student
     pay_methods = forms.ModelMultipleChoiceField(label='Metodos de pago',
-                                                 queryset=PaymentMethod.objects.all())
+                                                 queryset=PaymentMethod.objects.all(),
+                                                 required=True)
 
     class Meta:
         model = AbstractUser
