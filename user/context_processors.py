@@ -38,11 +38,11 @@ def user_processor(request):
             fixed_seller = FixedSeller.objects.get(super_seller=seller)
         except ObjectDoesNotExist:
             pass
-    return {'current_user': user,
-            'abstract_user': auser,
-            'seller': seller,
-            'student': student,
-            'walking_seller': walking_seller,
-            'fixed_seller': fixed_seller,
-            'auth': auth}
+    return {'logged_user': user,
+            'logged_abstract_user': auser,
+            'logged_seller': seller,
+            'logged_student': student,
+            'logged_walking_seller': walking_seller,
+            'logged_fixed_seller': fixed_seller,
+            'logged_auth': auth}
 

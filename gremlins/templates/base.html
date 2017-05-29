@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Compiled and minified CSS -->
@@ -20,82 +20,84 @@
     <script src="http://materializecss.com/templates/starter-template/js/init.js"></script>
 
     <nav class="top-nav">
-      <div class="nav-wrapper teal lighten-1">
-        <a href="#" class="brand-logo right"><img style="max-height:
+        <div class="nav-wrapper teal lighten-1">
+            <a href="#" class="brand-logo right"><img style="max-height:
           65px!important;  padding: 8px 0!important;" class="circle"
-          src="{% static "app/img/logo.png" %}"></a>
-        <div class="navbar-fixed">
-          <a href="#" data-activates="slide-out"
-            class="left button-collapse btn-floating btn-large waves-effect waves-light"><i
-              class="material-icons">menu</i></a>
-          <a class="center page-title"></a>
-        </div>
-        <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
-          <li>
-            <div class="userView">
-              <i class="material-icons right grey-text text-lighten-2" style="position: absolute; bottom: -0.5em; right: 0.5em; padding: 0 0 !important;">settings</i>
-              <div class="background" style="height:175px;">
-                <img src="/static/app/img/background4.png">
-              </div>
-              <a href="#!user"><img style="margin-top: 16%;" class="circle"
-                src="/static/app/img/AvatarPenguin.png"></a>
-                {% if auth %}
-                                  <a href="#!name"><span style="margin-left: 5%;" class="white-text name">{{ user.username }}</span></a>
+                                                      src="{% static "app/img/logo.png" %}"></a>
+            <div class="navbar-fixed">
+                <a href="#" data-activates="slide-out"
+                   class="left button-collapse btn-floating btn-large waves-effect waves-light"><i
+                        class="material-icons">menu</i></a>
+                <a class="center page-title"></a>
+            </div>
+            <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y">
+                <li>
+                    <div class="userView">
+                        <i class="material-icons right grey-text text-lighten-2"
+                           style="position: absolute; bottom: -0.5em; right: 0.5em; padding: 0 0 !important;">settings</i>
+                        <div class="background" style="height:175px;">
+                            <img src="/static/app/img/background4.png">
+                        </div>
+                        <a href="#!user"><img style="margin-top: 16%;" class="circle"
+                                              src="/static/app/img/AvatarPenguin.png"></a>
+                        {% if logged_auth %}
+                            <a href="#!name"><span style="margin-left: 5%;"
+                                                   class="white-text name">{{ logged_user.username }}</span></a>
 
-                {% else %}
-                                  <a href="#!name"><span style="margin-left: 5%;" class="white-text name">Invitado</span></a>
+                        {% else %}
+                            <a href="#!name"><span style="margin-left: 5%;" class="white-text name">Invitado</span></a>
 
+                        {% endif %}
+                    </div>
+                </li>
+                <li><a href="{% url 'index' %}"><i class="material-icons">home</i>Inicio</a></li>
+                <li><a href="{% url 'login' %}"><i class="material-icons">account_circle</i>Iniciar Sesión</a></li>
+                <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+                {% if logged_walking_seller %}
+                    <li><a href="{% url 'checkin' %}"><i class="material-icons">check circle</i>Has Check-in!</a></li>
                 {% endif %}
-            </div>
-          </li>
-          <li><a href="{% url 'index' %}"><i class="material-icons">home</i>Inicio</a></li>
-          <li><a href="{% url 'login' %}"><i class="material-icons">account_circle</i>Iniciar Sesión</a></li>
-          <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
-        {% if walking_seller %}
-            <li><a href="{% url 'checkin' %}"><i class="material-icons">check circle</i>Has Check-in!</a></li>
-        {% endif %}
-          <!--<li><div class="divider"></div></li>
-          <li><a class="subheader">Activo</a></li>
-          <li>
-            <div class="switch" style="margin-left: 80px;">
-              <label>
-                No<input type="checkbox"><span class="lever"></span>Si
-              </label>
-            </div>
-          </li>
-          <li><a class="subheader">Filtros</a></li>
-          <li>
-            <div class="switch" style="margin-left: 10px;">
-              <label>
-                <input type="checkbox"><span class="lever"></span>Sólo mostrar favoritos
-              </label>
-            </div>
-          </li>
-          <li>
-            <div class="switch" style="margin-left: 10px;">
-              <label>
-                <input type="checkbox"><span class="lever"></span>Snacks
-              </label>
-            </div>
-          </li>
-          <li>
-            <div class="switch" style="margin-left: 10px;">
-              <label>
-                <input type="checkbox"><span class="lever"></span>Almuerzos
-              </label>
-            </div>
-          </li>-->
-        </ul>
-      </div>
+                <!--<li><div class="divider"></div></li>
+                <li><a class="subheader">Activo</a></li>
+                <li>
+                  <div class="switch" style="margin-left: 80px;">
+                    <label>
+                      No<input type="checkbox"><span class="lever"></span>Si
+                    </label>
+                  </div>
+                </li>
+                <li><a class="subheader">Filtros</a></li>
+                <li>
+                  <div class="switch" style="margin-left: 10px;">
+                    <label>
+                      <input type="checkbox"><span class="lever"></span>Sólo mostrar favoritos
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="switch" style="margin-left: 10px;">
+                    <label>
+                      <input type="checkbox"><span class="lever"></span>Snacks
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="switch" style="margin-left: 10px;">
+                    <label>
+                      <input type="checkbox"><span class="lever"></span>Almuerzos
+                    </label>
+                  </div>
+                </li>-->
+            </ul>
+        </div>
     </nav>
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    {% block content %}
-    {% endblock %}
+{% block content %}
+{% endblock %}
 
-  </body>
+</body>
 
 </html>

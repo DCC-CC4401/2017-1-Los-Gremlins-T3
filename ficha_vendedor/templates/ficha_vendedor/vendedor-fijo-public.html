@@ -4,6 +4,26 @@
     <script>
         $(document).ready(function () {
             $('.modal').modal();
+            $("#form1").on("change", "input:checkbox", function () {
+                $("#form1").submit();
+            });
+            $("#form2").on("change", "input:checkbox", function () {
+                $("#form2").submit();
+            });
+            {%  if logged_student %}
+                $('#switch1').show()
+                $('#switch2').show()
+                {% if is_favorited %}
+                    $('#chk').prop('checked', true)
+                    $('#chk2').prop('checked', true)
+                {% else %}
+                    $('#chk').prop('checked', false)
+                    $('#chk2').prop('checked', false)
+                {% endif %}
+            {% else %}
+                $('#switch1').hide()
+                $('#switch2').hide()
+            {% endif %}
         });
 
     </script>
@@ -57,10 +77,13 @@
 
                         </div>
                         <div class="col s3 l2 hide-on-med-and-down center-align">
-                            <div class="switch" style="margin-left: 10px;">
+                            <div id='switch1' class="switch" style="margin-left: 10px;">
                                 <label>
-                                    <h4 class="card-title grey-text flow-text text-darken-4">Favorito</h4>
-                                    <input type="checkbox"><span class="lever"></span>
+                                    <form id='form1' method="post" action="/ficha_vendedor/{{ pkid }}">
+                                        {% csrf_token %}
+                                        <h4 class="card-title grey-text flow-text text-darken-4">Favorito</h4>
+                                        <input id="chk" type="checkbox"><span id="lvr" class="lever"></span>
+                                    </form>
                                 </label>
                             </div>
                         </div>
@@ -81,11 +104,17 @@
                             &ensp;Horario: <a
                                 class="light-green-text">{{ fixed_seller.start_hour }}-{{ fixed_seller.end_hour }}</a>
                         </p>
-                        <div class="switch" style="margin-left: 10px;">
+                        <div id='switch2' class="switch" style="margin-left: 10px;">
                             <label>
-                                <p class="card-title grey-text flow-text text-darken-4" style="font-size: 1.3rem;">
-                                    Favorito</p>
-                                <input type="checkbox"><span class="lever"></span>
+                                <form id='form2' method="post" action="/ficha_vendedor/{{ pkid }}">
+                                    {% csrf_token %}
+                                    <p class="card-title grey-text flow-text text-darken-4" style="font-size: 1.3rem;">
+                                        Favorito</p>
+                                    <input id="chk2" type="checkbox">
+                                    <span id="lvr2" class="lever"></span>
+                                </form>
+
+
                             </label>
                         </div>
                     </div>

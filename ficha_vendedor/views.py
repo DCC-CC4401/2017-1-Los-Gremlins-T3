@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from user.models import AbstractUser, Seller, WalkingSeller, FixedSeller, PaymentMethod
+from user.models import AbstractUser, Seller, WalkingSeller, FixedSeller, PaymentMethod, Student
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from ficha_vendedor.forms import FixedSellerEditForm, WalkingSellerEditForm
@@ -14,6 +14,7 @@ def fichavendedor(request, pkid):
         auser = AbstractUser.objects.get(user=duser)
         # find django user with that id.
         context = {}
+        context['pkid'] = pkid
         context['now'] = datetime.datetime.now()
         context['auser'] = auser
         if auser.account_type is 2:
@@ -27,6 +28,30 @@ def fichavendedor(request, pkid):
                 return render(request, 'ficha_vendedor/vendedor-ambulante-profile.html', context)
             else:
                 # Vista del estudiante
+                logged_auser = AbstractUser.objects.get(user=request.user)
+                if logged_auser.account_type is 1:
+                    # Es estudiante
+                    logged_student = Student.objects.get(user=logged_auser)
+                    print('es estudiante')
+                    if seller in logged_student.favorites.all():
+                        print('es fav')
+                        context['is_favorited'] = True
+                        if request.method == 'POST':
+                            # switch behaviour
+                            context['is_favorited'] = False
+                            logged_student.favorites.remove(seller)
+                            logged_student.save()
+                            seller.times_favorited -= 1
+                            seller.save()
+                    else:
+                        if request.method == 'POST':
+                            print('se hace fav')
+                            context['is_favorited'] = True
+                            logged_student.favorites.add(seller)
+                            logged_student.save()
+                            seller.times_favorited += 1
+                            seller.save()
+
                 return render(request, 'ficha_vendedor/vendedor-ambulante-public.html', context)
         elif auser.account_type is 3:
             # fixed seller
@@ -42,6 +67,29 @@ def fichavendedor(request, pkid):
                 return render(request, 'ficha_vendedor/vendedor-fijo-profile.html', context)
             else:
                 # Vista del estudiante
+                logged_auser = AbstractUser.objects.get(user=request.user)
+                if logged_auser.account_type is 1:
+                    # Es estudiante
+                    logged_student = Student.objects.get(user=logged_auser)
+                    print('es estudiante')
+                    if seller in logged_student.favorites.all():
+                        print('es fav')
+                        context['is_favorited'] = True
+                        if request.method == 'POST':
+                            # switch behaviour
+                            context['is_favorited'] = False
+                            logged_student.favorites.remove(seller)
+                            logged_student.save()
+                            seller.times_favorited -= 1
+                            seller.save()
+                    else:
+                        if request.method == 'POST':
+                            print('se hace fav')
+                            context['is_favorited'] = True
+                            logged_student.favorites.add(seller)
+                            logged_student.save()
+                            seller.times_favorited += 1
+                            seller.save()
                 return render(request, 'ficha_vendedor/vendedor-fijo-public.html', context)
     except ObjectDoesNotExist:
         return render(request, 'not-found.html')
