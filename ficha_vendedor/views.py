@@ -105,7 +105,7 @@ def seller_edit(request, pkid):
     elif auser.account_type is 3:
         # fixed seller
         return fixed_seller_edit(request, pkid)
-    return render(request, 'ficha_vendedor/../gremlins/templates/not-found.html')
+    return render(request, 'not-found.html')
 
 
 def fixed_seller_edit(request, pkid):
@@ -120,28 +120,39 @@ def fixed_seller_edit(request, pkid):
         form = FixedSellerEditForm(request.POST)
         if form.is_valid() and form.pass_is_valid():  # should show me pass dont match
             email = form.cleaned_data['email']
+            fullname = form.cleaned_data['fullname']
             pay_methods = form.cleaned_data['pay_methods']
             address = form.cleaned_data['address']
             password = form.cleaned_data['password']
             start_hour = form.cleaned_data['start_hour']
             end_hour = form.cleaned_data['end_hour']
 
-            if email is not None:
+            if email is not "":
+                print('changed mail')
                 duser.email = email
                 duser.username = email
                 duser.save()
-            if password is not None:
+            if fullname is not "":
+                print('changed fullname')
+                auser.fullname = fullname
+                auser.save()
+            if password is not "":
+                print('changed pass')
                 duser.set_password(password)
                 duser.save()
-            if pay_methods is not None:
+            if pay_methods is not "":
+                print('changed pay')
                 seller.payment_methods.clear()
                 seller.payment_methods.add(pay_methods)
                 seller.save()
-            if start_hour is not None:
+            if start_hour is not "":
+                print('changed start hour')
                 fixed_seller.start_hour = start_hour
-            if end_hour is not None:
+            if end_hour is not "":
+                print('changed end hour')
                 fixed_seller.end_hour = end_hour
-            if address is not None:
+            if address is not "":
+                print('changed address')
                 fixed_seller.address = address
             fixed_seller.save()
 
@@ -164,17 +175,25 @@ def walking_seller_edit(request, pkid):
         form = WalkingSellerEditForm(request.POST)
         if form.is_valid() and form.pass_is_valid():  # should show me pass dont match
             email = form.cleaned_data['email']
+            fullname = form.cleaned_data['fullname']
             pay_methods = form.cleaned_data['pay_methods']
             password = form.cleaned_data['password']
 
-            if email is not None:
+            if email is not "":
+                print('changed mail')
                 duser.email = email
                 duser.username = email
                 duser.save()
-            if password is not None:
+            if fullname is not "":
+                print('changed fullname')
+                auser.fullname = fullname
+                auser.save()
+            if password is not "":
+                print('changed pass')
                 duser.set_password(password)
                 duser.save()
             if pay_methods is not None:
+                print('changed pay')
                 seller.payment_methods.clear()
                 seller.payment_methods.add(pay_methods)
                 seller.save()

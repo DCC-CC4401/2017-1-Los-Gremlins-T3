@@ -66,7 +66,7 @@
         </div>
 
         <div class="col s3 l2 hide-on-med-and-down right-align">
-          <a class="btn-floating activator waves-effect waves-light darken-2">
+          <a href="/ficha_vendedor/{{ pkid }}/edit" class="btn-floating activator waves-effect waves-light darken-2">
             <i class="material-icons">mode_edit</i>
           </a>
         </div>
@@ -118,13 +118,13 @@
           </div>
         </div>-->
         <div class="col s4 offset-s8 right-align"> <!--offset-s4-->
-          <a class="btn-floating activator waves-effect waves-light darken-2">
+          <a href="/ficha_vendedor/{{ pkid }}/edit" class="btn-floating activator waves-effect waves-light darken-2">
             <i class="material-icons">mode_edit</i>
           </a>
         </div>
       </div>
     </div>
   </div>
-  {%  include 'ficha_vendedor/products.html' %}
+    {% include 'ficha_vendedor/products.html' %}
 </main>
 {% endblock %}

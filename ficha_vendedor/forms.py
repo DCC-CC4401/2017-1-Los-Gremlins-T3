@@ -16,6 +16,10 @@ class FixedSellerEditForm(forms.Form):
                              max_length=254,
                              required=False)
 
+    fullname = forms.CharField(label='Nombre de tienda',
+                               max_length=128,
+                               required=False)
+
     pay_methods = forms.ModelMultipleChoiceField(label='Metodos de pago',
                                                  queryset=PaymentMethod.objects.all(),
                                                  required=False)
@@ -53,6 +57,11 @@ class WalkingSellerEditForm(forms.Form):
     email = forms.EmailField(label='E-Mail',
                              max_length=254,
                              required=False)
+
+    fullname = forms.CharField(label='Nombre de tienda',
+                               max_length=128,
+                               required=False)
+
     pay_methods = forms.ModelMultipleChoiceField(label='Metodos de pago',
                                                  queryset=PaymentMethod.objects.all(),
                                                  required=False)
