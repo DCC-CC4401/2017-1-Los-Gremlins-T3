@@ -81,6 +81,10 @@ def edit_student(request, pkid):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             fullname = form.cleaned_data['fullname']
+            avatar = form.cleaned_data['student_avatar']
+            if avatar is not "":
+                auser.avatar = '/static/app/img/AvatarEstudiante' + str(int(avatar) + 1) + ".png"
+                auser.save()
             if fullname is not "":
                 print("edited fullname")
                 auser.fullname = fullname
@@ -99,7 +103,8 @@ def edit_student(request, pkid):
         if request.user.is_authenticated():
             logged_auser = AbstractUser.objects.get(user=request.user)
             if (request.user.id == int(pkid) and auser.account_type is 1) or logged_auser.account_type is 4:
-                form = StudentEditForm({})  # TODO: Preload with previous data
+                form = StudentEditForm(initial={'email':duser.email,
+                                                'fullname':auser.fullname,})
                 return render(request, 'user/student-edit.html', {'form': form, 'pkid': pkid})
     return render(request, 'not-found.html')
 

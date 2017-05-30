@@ -171,8 +171,13 @@ def fixed_seller_edit(request, pkid):
         logged_auser = AbstractUser.objects.get(user=request.user)
         print(str(logged_auser.account_type))
         if request.user.is_authenticated() and \
-                ((request.user.id == int(pkid) and auser.account_type is 2) or logged_auser.account_type is 4):
-            form = FixedSellerEditForm({})  # TODO: Preload with previous data
+                (request.user.id == int(pkid) or logged_auser.account_type is 4):
+            form = FixedSellerEditForm(initial={'email':duser.email,
+                                                'fullname':auser.fullname,
+                                                'pay_methods':seller.payment_methods.all().values_list('name', flat=True),
+                                                'start_hour':fixed_seller.start_hour,
+                                                'end_hour':fixed_seller.end_hour,
+                                                'address':fixed_seller.address})
             return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
         return render(request, 'not-found.html')
 
@@ -221,7 +226,9 @@ def walking_seller_edit(request, pkid):
 
         if request.user.is_authenticated() and \
                 ((request.user.id == int(pkid) and auser.account_type is 2) or logged_auser.account_type is 4):
-            form = WalkingSellerEditForm({})  # TODO: Preload with previous data
+            form = WalkingSellerEditForm(initial={'email':duser.email,
+                                                  'fullname':auser.fullname,
+                                                  'pay_methods':seller.payment_methods.all().values_list('name', flat=True)})
             return render(request, 'ficha_vendedor/vendedor-edit.html', {'form': form, 'pkid': pkid})
     return render(request, 'not-found.html')
 

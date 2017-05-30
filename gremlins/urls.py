@@ -41,7 +41,7 @@ urlpatterns = [
 
     # Producto
     url(r'^producto/add', producto_views.add_producto, name='add_producto'),
-    url(r'^producto/(?P<pkid>\d+)$',
+    url(r'^producto/(?P<pkid>\d+)/$',
         producto_views.producto,
         name='producto'),
     url(r'^producto/(?P<pkid>\d+)/delete',

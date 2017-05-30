@@ -99,7 +99,6 @@ class WalkingSellerEditForm(forms.Form):
                                                  queryset=PaymentMethod.objects.all(),
                                                  required=False)
 
-    # TODO: Avatar change
 
     password = forms.CharField(label='Nueva Contraseña',
                                widget=forms.PasswordInput,

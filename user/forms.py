@@ -50,7 +50,8 @@ class StudentEditForm(forms.Form):
 
     student_avatar = forms.ChoiceField(label='Alumno, selecciona una avatar',
                                     widget=forms.RadioSelect,
-                                    choices=_achoices)
+                                    choices=_achoices,
+                                       required=False)
 
 
     password = forms.CharField(label='Nueva Contraseña',

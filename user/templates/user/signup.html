@@ -6,33 +6,45 @@
             $('select').material_select();
 
         });
-        window.setInterval(function(){
-    if ($('.active.selected').text() == 'Vendedor Ambulante'){
-        $('#4').hide();
-        $('#5').show();
-        $('#8').hide();
-        $('#9').hide();
-        $('#10').hide();
-        $('#11').show();
-    } else if ($('.active.selected').text() == 'Vendedor Fijo'){
-        $('#4').hide();
-        $('#5').show();
-        $('#8').show();
-        $('#9').show();
-        $('#10').show();
-        $('#11').show();
-        $('#id_address').val('')
-    } else {
-        // alumno
-        $('#4').show();
-        $('#5').hide();
-        $('#8').hide();
-        $('#9').hide();
-        $('#10').hide();
-        $('#11').hide();
-        $('#id_address').val('dummy')
-    }
-}, 1000);
+        var flag = 0;
+        window.setInterval(function () {
+            if ($('.active.selected').text() == 'Vendedor Ambulante') {
+                if (flag !== 1) {
+                    flag = 1;
+                    $('#4').hide();
+                    $('#5').show();
+                    $('#8').hide();
+                    $('#9').hide();
+                    $('#10').hide();
+                    $('#11').show();
+                    $('#id_address').val('dummy')
+                }
+            } else if ($('.active.selected').text() == 'Vendedor Fijo') {
+                if (flag !== 2) {
+                    flag = 2;
+                    $('#4').hide();
+                    $('#5').show();
+                    $('#8').show();
+                    $('#9').show();
+                    $('#10').show();
+                    $('#11').show();
+                    $('#id_address').val('')
+                }
+            } else {
+                // alumno
+                if (flag !== 3) {
+                    flag = 3;
+                    $('#4').show();
+                    $('#5').hide();
+                    $('#8').hide();
+                    $('#9').hide();
+                    $('#10').hide();
+                    $('#11').hide();
+                    $('#id_address').val('dummy')
+                }
+            }
+
+        }, 500);
     </script>
 
     <div class="section"></div>

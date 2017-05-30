@@ -85,7 +85,7 @@ def producto(request, pkid):
                 print("edited prev_img_id")
                 product.prev_img_id = prev_img_id
             product.save()
-        return redirect('/ficha_vendedor/' + str(duser.id))
+        return redirect('/ficha_vendedor/' + str(product.owner.user.user.id))
 
     else:
         form = EditProductoForm()
@@ -116,7 +116,7 @@ def delete_producto(request, pkid):
             seller = Seller.objects.get(user=logged_user)
             if product.owner.id == seller.id:
                 product.delete()
-                return redirect('/ficha_vendedor/' + str(request.user.id))
+                return redirect('/ficha_vendedor/' + str(product.owner.user.user.id))
         except ObjectDoesNotExist:
             pass
     return render(request, 'not-found.html')

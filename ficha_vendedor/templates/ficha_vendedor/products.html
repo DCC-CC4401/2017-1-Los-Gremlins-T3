@@ -13,7 +13,7 @@
                     <div class="teal lighten-2 card-image waves-effect waves-block waves-light">
                       <img class="activator responsive-img center-block"
                       style="max-width: 30%; margin-top:20px;
-                      margin-bottom:20px;" src="{{ product.photo }}">
+                      margin-bottom:20px;" src="/static/app/img/food{{ product.prev_img_id}}.png">
                     </div>
                     <div class="card-content">
                       <span class="card-title activator grey-text text-darken-4">{{ product.name }}
@@ -59,7 +59,7 @@
                       -->
                     </div>
                     <div class="card-reveal">
-                      <span class="card-title grey-text text-darken-4">Pizza<i
+                      <span class="card-title grey-text text-darken-4">{{ product.name }}<i
                           class="material-icons right">close</i></span>
                       <ul>
                         <li>Precio: <a class="green-text light-green-text">${{ product.price }}</a>
@@ -98,10 +98,12 @@
         </div>
 
       </div>
-      <div class='row'>
+    {% if logged_seller %}
+              <div class='row'>
         <a class='col l5 offset-l4 btn btn-large waves-effect button teal'
           href="/producto/add" >Agregar Item</a>
       </div>
+    {% endif %}
     </div>
   </div>
 </div>
