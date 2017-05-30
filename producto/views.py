@@ -101,3 +101,24 @@ def producto(request, pkid):
     return redirect('not-found.html')
 
 
+def delete_producto(request, pkid):
+    try:
+        product = Producto.objects.get(pk=pkid)
+    except ObjectDoesNotExist:
+        return render(request, 'not-found.html')
+    if request.user.is_authenticated():
+        logged_user = AbstractUser.objects.get(user=request.user)
+        if logged_user.account_type is 4:
+            # admin
+            product.delete()
+            return redirect('index')
+        try:
+            seller = Seller.objects.get(user=logged_user)
+            if product.owner.id == seller.id:
+                product.delete()
+                return redirect('/ficha_vendedor/' + str(request.user.id))
+        except ObjectDoesNotExist:
+            pass
+    return render(request, 'not-found.html')
+
+

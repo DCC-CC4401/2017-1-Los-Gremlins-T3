@@ -35,13 +35,16 @@ urlpatterns = [
     url(r'^$', home_views.index, name='index'),
 
     # User
-    url(r'^user/login/$', auth_views.login, {'template_name':'user/login.html'}, name='login'),
+    url(r'^user/login/$', auth_views.login, {'template_name': 'user/login.html'}, name='login'),
     url(r'^user/logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'user/', include('user.urls', namespace='user')),
 
     # Producto
     url(r'^producto/add', producto_views.add_producto, name='add_producto'),
-    url(r'^producto/(?P<pkid>\d+)',
+    url(r'^producto/(?P<pkid>\d+)$',
         producto_views.producto,
-        name='producto')
+        name='producto'),
+    url(r'^producto/(?P<pkid>\d+)/delete',
+        producto_views.delete_producto,
+        name='delete')
 ]
