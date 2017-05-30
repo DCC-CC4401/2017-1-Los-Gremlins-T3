@@ -20,6 +20,8 @@ def signup(request):
             duser = User.objects.create_user(form.cleaned_data['email'],
                                                   form.cleaned_data['email'],
                                                   form.cleaned_data['password'])
+            authuser = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            login(request, authuser)
             auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'], account_type=int(account_type))
             auser.save()
             if account_type is '1':
@@ -47,7 +49,7 @@ def signup(request):
                                            end_hour=form.cleaned_data['end_hour'],
                                            address=form.cleaned_data['address'])
                 fixed_seller.save()
-            return redirect('login')
+            return redirect('index')
     else:
         form = SignUpForm(initial={'pay_methods': [PaymentMethod.objects.all().values_list('name', flat=True)[0]]})
     return render(request, 'user/signup.html', {'form': form})
