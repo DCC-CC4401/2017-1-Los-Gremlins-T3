@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <script>
+        $(document).ready(function () {
+            $('.modal').modal();
+            $("#form1").on("change", "input:checkbox", function () {
+                $("#form1").submit();
+            });
+                        $("#form2").on("change", "input:checkbox", function () {
+                $("#form2").submit();
+            });
+            {%  if logged_student %}
+                $('#switch1').show()
+                $('#switch2').show()
+                {% if is_favorited %}
+                    $('#chk').prop('checked', true)
+                    $('#chk2').prop('checked', true)
+                {% else %}
+                    $('#chk').prop('checked', false)
+                    $('#chk2').prop('checked', false)
+                {% endif %}
+            {% else %}
+                $('#switch1').hide()
+                $('#switch2').hide()
+            {% endif %}
+        });
+
+    </script>
+    <main>
+
+        <div class="container">
+            <div id="profile-page-header" class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator" src="/static/app/img/food-background3.png" alt="user background">
+                </div>
+                <div class="row hide-on-small-and-down">
+                    <a class="card-profile-image-large">
+                        <img style="margin-top: 20%;" src="/static/app/img/AvatarVendedor6.png" alt="profile image"
+                             class="circle z-depth-2 responsive-img activator">
+                    </a>
+                </div>
+                <div class="row show-on-small hide-on-med-and-up">
+                    <a class="card-profile-image-small">
+                        <img src="/static/app/img/AvatarVendedor6.png" alt="profile image"
+                             class="circle z-depth-2 responsive-img activator">
+                    </a>
+                </div>
+                <div class="card-content s12">
+                    <div class="row">
+                        <div class="col s3 offset-s2 hide-on-med-and-down">
+                            <h4 class="card-title grey-text flow-text text-darken-4">{{ auser.fullname }}</h4>
+                            <p class="medium-small flow-text grey-text">&emsp;&emsp;&ensp;Vendedor Ambulante</p>
+                        </div>
+                        <div class="col s3 l2 hide-on-med-and-down center-align">
+                            <h4 class="card-title flow-text text-darken-4">Estado</h4>
+                            {% if walking_seller.is_active %}
+                                <p class="medium-small flow-text light-green-text">
+                                    Disponible
+                                </p>
+                            {% else %}
+                                <p class="medium-small flow-text light-red-text">
+                                    No disponible
+                                </p>
+                            {% endif %}
+
+
+                        </div>
+                        <div class="col s3 l2 hide-on-med-and-down center-align">
+                            <h8 class=" grey-text flow-text text-darken-4" style="font-size: 1.3rem;">Formas de pago
+                            </h8>
+                            {% for pay_method in seller.payment_methods.all %}
+                                <p class="medium-small flow-text grey-text">{{ pay_method }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col s3 l2 hide-on-med-and-down center-align">
+                            <div id='switch1' class="switch" style="margin-left: 10px;">
+                                <label>
+                                    <form id='form1' method="post" action="/ficha_vendedor/{{ pkid }}">
+                                        {%  csrf_token %}
+                                        <h4 class="card-title grey-text flow-text text-darken-4">Favorito</h4>
+                                        <input id="chk" type="checkbox"><span id="lvr" class="lever"></span>
+                                    </form>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row show-on-medium-and-down hide-on-med-and-up">
+                    <div class="col s4 offset-s2">
+                        <h4 class="card-title grey-text flow-text text-darken-4">{{ auser.fullname }}</h4>
+                        <p class="medium-small flow-text grey-text">&ensp;Vendedor Ambulante</p>
+                        <div id='switch2' class="switch" style="margin-left: 10px;">
+                            <label>
+                                <form id='form2' method="post" action="/ficha_vendedor/{{ pkid }}">
+                                    {% csrf_token %}
+                                    <p class="card-title grey-text flow-text text-darken-4" style="font-size: 1.3rem;">
+                                        Favorito</p>
+                                    <input id="chk2" type="checkbox">
+                                    <span id="lvr2" class="lever"></span>
+                                </form>
+
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col s3 m2 l12 offset-s1">
+                        <p class="flow-text text-darken-4">Estado</p>
+                        {% if walking_seller.is_active %}
+                            <p class="medium-small flow-text light-green-text">
+                                Disponible
+                            </p>
+                        {% else %}
+                            <p class="medium-small flow-text light-red-text">
+                                No disponible
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="col s3 m2 l12 offset-s1"> <!--offset-s2-->
+                        <p class=" grey-text flow-text text-darken-4" style="font-size: 1.3rem;">Formas de pago</p>
+                        {% for pay_method in seller.payment_methods.all %}
+                            <p class="medium-small flow-text grey-text">{{ pay_method }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <!--<div class="col s3 offset-s2 offset-l10">
+                      <div class="switch" style="margin-left: 10px;">
+                        <label>
+                          <p class="card-title grey-text flow-text text-darken-4" style="font-size: 1.3rem;">Favorito</p>
+                          <input type="checkbox"><span class="lever"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col s4 offset-s8 right-align">
+                        <a class="btn-floating activator waves-effect waves-light darken-2">
+                            <i class="material-icons">mode_edit</i>
+                        </a>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        {% include 'ficha_vendedor/products.html' %}
+    </main>
+{% endblock %}

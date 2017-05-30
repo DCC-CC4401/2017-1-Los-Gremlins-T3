@@ -1,6 +1,7 @@
 *.egg-info
 *.pot
 *.py[co]
+*.ink
 .tox/
 __pycache__
 MANIFEST
@@ -12,5 +13,11 @@ tests/coverage_html/
 tests/.coverage
 build/
 tests/report/
-DS_Store
+.DS_Store
 env/
+db.sqlite3
+.idea/
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+producto/migrations/*
