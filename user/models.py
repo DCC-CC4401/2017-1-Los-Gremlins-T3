@@ -15,7 +15,7 @@ class AbstractUser(models.Model):
     # Common data
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="abstract_user")
     fullname = models.TextField()
-    photo = models.ImageField()
+    avatar = models.TextField(max_length=200)
     account_type = models.IntegerField(default=0)
 
 

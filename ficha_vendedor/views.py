@@ -23,6 +23,8 @@ def fichavendedor(request, pkid):
             seller = Seller.objects.get(user=auser)
             context['seller'] = seller
             walking_seller = WalkingSeller.objects.get(super_seller=seller)
+            for product in seller.producto_set.all():
+                print(product.name)
             context['walking_seller'] = walking_seller
             if request.user.is_authenticated() and request.user.id == int(pkid):
                 # Vista del vendedor
@@ -129,7 +131,12 @@ def fixed_seller_edit(request, pkid):
             password = form.cleaned_data['password']
             start_hour = form.cleaned_data['start_hour']
             end_hour = form.cleaned_data['end_hour']
-
+            avatar = form.cleaned_data['seller_avatar']
+            if avatar is not "":
+                auser.avatar = '/static/app/img/AvatarVendedor' + str(int(avatar) + 1) + ".png"
+                auser.save()
+            if form.cleaned_data['seller_avatar'] is None:
+                print('nada')
             if email is not "":
                 print('changed mail')
                 duser.email = email
@@ -143,10 +150,11 @@ def fixed_seller_edit(request, pkid):
                 print('changed pass')
                 duser.set_password(password)
                 duser.save()
-            if pay_methods is not None:
+            if len(pay_methods.all()) is not 0:
                 print('changed pay')
                 seller.payment_methods.clear()
-                seller.payment_methods.add(pay_methods)
+                for pay in pay_methods:
+                    seller.payment_methods.add(pay)
                 seller.save()
             if start_hour is not None:
                 print('changed start hour')
@@ -183,7 +191,10 @@ def walking_seller_edit(request, pkid):
             fullname = form.cleaned_data['fullname']
             pay_methods = form.cleaned_data['pay_methods']
             password = form.cleaned_data['password']
-
+            avatar = form.cleaned_data['seller_avatar']
+            if avatar is not "":
+                auser.avatar = auser.avatar = '/static/app/img/AvatarVendedor' + str(int(avatar) + 1) + ".png"
+                auser.save()
             if email is not "":
                 print('changed mail')
                 duser.email = email
@@ -197,10 +208,11 @@ def walking_seller_edit(request, pkid):
                 print('changed pass')
                 duser.set_password(password)
                 duser.save()
-            if pay_methods is not None:
+            if len(pay_methods.all()) is not 0:
                 print('changed pay')
                 seller.payment_methods.clear()
-                seller.payment_methods.add(pay_methods)
+                for pay in pay_methods:
+                    seller.payment_methods.add(pay)
                 seller.save()
             return redirect('ficha_vendedor/' + str(pkid))
     else:
