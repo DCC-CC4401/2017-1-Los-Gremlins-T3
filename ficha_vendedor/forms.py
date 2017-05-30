@@ -36,15 +36,17 @@ _radio_attrs = {
 
 class FixedSellerEditForm(forms.Form):
     email = forms.EmailField(label='E-Mail',
+                             widget=forms.EmailInput(attrs={'id':'mail'}),
                              max_length=254,
                              required=False)
 
     fullname = forms.CharField(label='Nombre de tienda',
+                               widget=forms.TextInput(attrs={'id':'fullname'}),
                                max_length=128,
                                required=False)
 
     seller_avatar = forms.ChoiceField(label='Vendedor, selecciona un avatar',
-                                    widget=forms.RadioSelect,
+                                    widget=forms.RadioSelect(attrs={'id':'avatar'}),
                                     choices=_schoices,
                                       required=False)
 
@@ -61,8 +63,6 @@ class FixedSellerEditForm(forms.Form):
     address = forms.CharField(label="Dirección del local",
                               max_length=128,
                               required=False)
-
-    # TODO: Avatar change
 
     password = forms.CharField(label='Nueva Contraseña',
                                widget=forms.PasswordInput,

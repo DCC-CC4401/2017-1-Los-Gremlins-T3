@@ -4,7 +4,35 @@
     <script>
         $(document).ready(function () {
             $('select').material_select();
+
         });
+        window.setInterval(function(){
+    if ($('.active.selected').text() == 'Vendedor Ambulante'){
+        $('#4').hide();
+        $('#5').show();
+        $('#8').hide();
+        $('#9').hide();
+        $('#10').hide();
+        $('#11').show();
+    } else if ($('.active.selected').text() == 'Vendedor Fijo'){
+        $('#4').hide();
+        $('#5').show();
+        $('#8').show();
+        $('#9').show();
+        $('#10').show();
+        $('#11').show();
+        $('#id_address').val('')
+    } else {
+        // alumno
+        $('#4').show();
+        $('#5').hide();
+        $('#8').hide();
+        $('#9').hide();
+        $('#10').hide();
+        $('#11').hide();
+        $('#id_address').val('dummy')
+    }
+}, 1000);
     </script>
 
     <div class="section"></div>
@@ -25,7 +53,7 @@
                     </div>
                     {% csrf_token %}
                     {% for field in form %}
-                        <div class='row'>
+                        <div class='row' id='{{ forloop.counter }}'>
                             <label style="text-align: center"> {{ field.label_tag }} </label>
                             {{ field }}
                             {% if field.help_text %}
