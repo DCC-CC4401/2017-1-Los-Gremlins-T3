@@ -88,7 +88,12 @@ def producto(request, pkid):
         return redirect('/ficha_vendedor/' + str(product.owner.user.user.id))
 
     else:
-        form = EditProductoForm()
+        form = EditProductoForm(initial={'name':product.name,
+                                         'price':product.price,
+                                         'stock':product.stock,
+                                         'description':product.description,
+                                         'category':product.category,
+                                         'prev_img': product.prev_img_id})
         context['form'] = form
         if auser.account_type == 4:
             return render(request, 'producto/edit-product.html', context)
