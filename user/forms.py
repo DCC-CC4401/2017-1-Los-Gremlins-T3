@@ -5,33 +5,6 @@ from django.utils.safestring import mark_safe
 
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-
-
-class StudentEditForm(forms.Form):
-    email = forms.EmailField(label='E-Mail',
-                             max_length=254,
-                             required=False)
-
-    fullname = forms.CharField(label='Nombre completo',
-                               max_length=128,
-                               required=False)
-
-    # TODO: Avatar change
-
-    password = forms.CharField(label='Nueva Contraseña',
-                               widget=forms.PasswordInput,
-                               required=False)
-    password2 = forms.CharField(label='Repite nueva contraseña',
-                                widget=forms.PasswordInput,
-                                required=False)
-
-    def pass_is_valid(self):
-        if 'password' in self.cleaned_data:
-            password = self.cleaned_data['password']
-            password2 = self.cleaned_data['password2']
-            if password == password2:
-                return True
-        return False
 _alabels = [
     '<label class="prev" "for="test1"><img src="/static/app/img/AvatarEstudiante1.png"/>\
     </label>',
@@ -58,12 +31,43 @@ _slabels = [
 ]
 
 _achoices = [(id, mark_safe(_alabels[id])) for id in range(len(_alabels))]
+
 _schoices = [(id, mark_safe(_slabels[id])) for id in range(len(_slabels))]
 _radio_attrs = {
     'class': 'with-gap',
     'name': 'group1',
     'id': 'test1'
 }
+
+class StudentEditForm(forms.Form):
+    email = forms.EmailField(label='E-Mail',
+                             max_length=254,
+                             required=False)
+
+    fullname = forms.CharField(label='Nombre completo',
+                               max_length=128,
+                               required=False)
+
+    student_avatar = forms.ChoiceField(label='Alumno, selecciona una avatar',
+                                    widget=forms.RadioSelect,
+                                    choices=_achoices)
+
+
+    password = forms.CharField(label='Nueva Contraseña',
+                               widget=forms.PasswordInput,
+                               required=False)
+    password2 = forms.CharField(label='Repite nueva contraseña',
+                                widget=forms.PasswordInput,
+                                required=False)
+
+    def pass_is_valid(self):
+        if 'password' in self.cleaned_data:
+            password = self.cleaned_data['password']
+            password2 = self.cleaned_data['password2']
+            if password == password2:
+                return True
+        return False
+
 
 
 class SignUpForm(forms.Form):
@@ -79,12 +83,12 @@ class SignUpForm(forms.Form):
                                max_length=128,
                                help_text='Requerido. Tu nombre o el nombre de tu tienda.')
 
-    student_avatar = forms.ChoiceField(label='Alumno, selecciona una imagen previa',
+    student_avatar = forms.ChoiceField(label='Alumno, selecciona un avatar',
                                     widget=forms.RadioSelect,
                                     choices=_achoices,
                                        initial=0)
 
-    seller_avatar = forms.ChoiceField(label='Vendedor, selecciona una imagen previa',
+    seller_avatar = forms.ChoiceField(label='Vendedor, selecciona un avatar',
                                     widget=forms.RadioSelect,
                                     choices=_schoices,
                                       initial=1)

@@ -54,10 +54,10 @@
                             <a href="/ficha_vendedor/{{ logged_user.id }}">
                         {% endif %}
                         {% if logged_auth %}
-                                                    <img style="margin-top: 16%;" class="circle" src="{{ logged_avatar }}"></a>
+                            <img style="margin-top: 16%;" class="circle" src="{{ logged_avatar }}"></a>
 
-                            {% else %}
-                                                    <img style="margin-top: 16%;" class="circle" src="/static/app/img/AvatarPenguin.png"></a>
+                        {% else %}
+                            <img style="margin-top: 16%;" class="circle" src="/static/app/img/AvatarPenguin.png"></a>
 
                         {% endif %}
                         {% if logged_student %}
@@ -68,7 +68,7 @@
                         {% endif %}
                         {% if logged_auth %}
                             <span style="margin-left: 5%;"
-                                                   class="white-text name">{{ logged_name }}</span></a>
+                                  class="white-text name">{{ logged_name }}</span></a>
 
                         {% else %}
                             <span style="margin-left: 5%;" class="white-text name">Invitado</span></a>
@@ -77,8 +77,13 @@
                     </div>
                 </li>
                 <li><a href="{% url 'index' %}"><i class="material-icons">home</i>Inicio</a></li>
-                <li><a href="{% url 'login' %}"><i class="material-icons">account_circle</i>Iniciar Sesión</a></li>
-                <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+                {% if logged_auth %}
+                    <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+
+                {% else %}
+                    <li><a href="{% url 'login' %}"><i class="material-icons">account_circle</i>Iniciar Sesión</a></li>
+
+                {% endif %}
                 {% if logged_walking_seller %}
                     <li><a href="{% url 'checkin' %}"><i class="material-icons">check circle</i>Haz Check-in!</a></li>
                 {% endif %}

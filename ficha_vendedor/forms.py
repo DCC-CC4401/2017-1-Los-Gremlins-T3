@@ -5,10 +5,33 @@ from user.models import AbstractUser, PaymentMethod
 
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 
 class RegistroVendedorFijoForm(forms.Form):
     fullname = forms.CharField(label='Full name', max_length=100)
+
+_slabels = [
+    '<label class="prev" "for="test1"><img src="/static/app/img/AvatarVendedor1.png"/>\
+    </label>',
+    '<label class="prev" "for="test2"><img src="/static/app/img/AvatarVendedor2.png"/>\
+    </label>',
+    '<label class="prev" "for="test3"><img src="/static/app/img/AvatarVendedor3.png"/>\
+    </label>',
+    '<label class="prev" "for="test4"><img src="/static/app/img/AvatarVendedor4.png"/>\
+    </label>',
+    '<label class="prev" "for="test4"><img src="/static/app/img/AvatarVendedor5.png"/>\
+    </label>',
+    '<label class="prev" "for="test4"><img src="/static/app/img/AvatarVendedor6.png"/>\
+    </label>',
+]
+
+_schoices = [(id, mark_safe(_slabels[id])) for id in range(len(_slabels))]
+_radio_attrs = {
+    'class': 'with-gap',
+    'name': 'group1',
+    'id': 'test1'
+}
 
 
 class FixedSellerEditForm(forms.Form):
@@ -19,6 +42,11 @@ class FixedSellerEditForm(forms.Form):
     fullname = forms.CharField(label='Nombre de tienda',
                                max_length=128,
                                required=False)
+
+    seller_avatar = forms.ChoiceField(label='Vendedor, selecciona un avatar',
+                                    widget=forms.RadioSelect,
+                                    choices=_schoices,
+                                      required=False)
 
     pay_methods = forms.ModelMultipleChoiceField(label='Metodos de pago',
                                                  queryset=PaymentMethod.objects.all(),
@@ -61,6 +89,11 @@ class WalkingSellerEditForm(forms.Form):
     fullname = forms.CharField(label='Nombre de tienda',
                                max_length=128,
                                required=False)
+
+    seller_avatar = forms.ChoiceField(label='Vendedor, selecciona un avatar',
+                                    widget=forms.RadioSelect,
+                                    choices=_schoices,
+                                      required=False)
 
     pay_methods = forms.ModelMultipleChoiceField(label='Metodos de pago',
                                                  queryset=PaymentMethod.objects.all(),
