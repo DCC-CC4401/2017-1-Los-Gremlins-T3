@@ -29,7 +29,7 @@ def signup(request):
                 auser.save()
                 student = Student(user=auser)
                 student.save()
-                return redirect('login')
+                return redirect('index')
             # Here if seller
             auser.avatar = '/static/app/img/AvatarVendedor' + str(int(form.cleaned_data['seller_avatar']) + 1) + ".png"
             auser.save()
