@@ -64,7 +64,11 @@ def admin_signup(request):
                                                   form.cleaned_data['password'])
             auser = AbstractUser(user=duser, fullname=form.cleaned_data['fullname'], account_type=4)
             auser.save()
-            return redirect('login')
+            # finish user creation
+            # start login
+            authuser = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            login(request, authuser)
+            return redirect('index')
     else:
         form = AdminSignUpForm()
     return render(request, 'user/admin_signup.html', {'form': form})
@@ -100,7 +104,7 @@ def edit_student(request, pkid):
                 print("edited pass")
                 duser.set_password(password)
                 duser.save()
-            return redirect('login')
+            return redirect('index')
     else:
         if request.user.is_authenticated():
             logged_auser = AbstractUser.objects.get(user=request.user)
