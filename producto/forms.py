@@ -92,11 +92,51 @@ class CreateProductoForm(forms.Form):
                                   widget=forms.Textarea(
                                       attrs=_attributes['desc']))
 
+    category = forms.CharField(label='Categoría',
+                                  widget=forms.Textarea(
+                                      attrs=_attributes['desc']))
+
     prev_img = forms.ChoiceField(label='Selecciona una imagen previa',
                                  widget=forms.RadioSelect(
                                      attrs=_radio_attrs),
                                  choices=_choices)
-    img = forms.FileField(label='Imagen del producto')
+    # img = forms.FileField(label='Imagen del producto')
+
+    class Meta:
+        model = Producto
+
+class EditProductoForm(forms.Form):
+    name = forms.CharField(label='Nombre del producto',
+                           max_length=128,
+                           widget=forms.TextInput(attrs=_attributes['name']),
+                           required=False)
+
+    price = forms.IntegerField(label='Precio del Producto',
+                               widget=forms.NumberInput(
+                                   attrs=_attributes['price']),
+                           required=False)
+
+    stock = forms.IntegerField(label='Stock del producto',
+                               widget=forms.NumberInput(
+                                   attrs=_attributes['stock']),
+                           required=False)
+
+    description = forms.CharField(label='Descripción',
+                                  widget=forms.Textarea(
+                                      attrs=_attributes['desc']),
+                           required=False)
+
+    category = forms.CharField(label='Categoría',
+                                  widget=forms.Textarea(
+                                      attrs=_attributes['desc']),
+                           required=False)
+
+    prev_img = forms.ChoiceField(label='Selecciona una imagen previa',
+                                 widget=forms.RadioSelect(
+                                     attrs=_radio_attrs),
+                                 choices=_choices,
+                           required=False)
+    # img = forms.FileField(label='Imagen del producto')
 
     class Meta:
         model = Producto

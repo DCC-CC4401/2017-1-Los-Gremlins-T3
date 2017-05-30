@@ -3,6 +3,7 @@ from user.models import Seller
 
 # Create your models here.
 
+
 class Producto(models.Model):
     name = models.CharField(max_length=128)
     price = models.IntegerField()
