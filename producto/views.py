@@ -116,7 +116,7 @@ def delete_producto(request, pkid):
         if logged_user.account_type is 4:
             # admin
             product.delete()
-            return redirect('index')
+            return redirect('/ficha_vendedor/' + str(product.owner.user.user.id))
         try:
             seller = Seller.objects.get(user=logged_user)
             if product.owner.id == seller.id:
